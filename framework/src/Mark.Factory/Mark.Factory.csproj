@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- 生成器运行时依赖 -->
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <!-- 允许输出生成的源代码，方便调试 -->
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+</Project>

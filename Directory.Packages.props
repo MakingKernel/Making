@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1"/>
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftPackageVersion)"/>
+        <!-- 新增：源生成器所需依赖版本 -->
+        <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.0" />
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    </ItemGroup>
+</Project>

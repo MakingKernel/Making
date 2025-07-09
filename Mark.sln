@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F8CEC9C7-F601-4710-8958-97C957C3A8EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework", "framework", "{C1BF93A4-0922-4605-9A0E-D7901AE11DA5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1DDFB55C-3685-4FA4-B5B3-D73872B8D5F9}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6D268736-6847-4F34-9837-5E7246C70D05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Core", "framework\src\Mark.Core\Mark.Core.csproj", "{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Factory", "framework\src\Mark.Factory\Mark.Factory.csproj", "{47CD02DE-9BF1-422F-8498-ADEB4B45A993}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D268736-6847-4F34-9837-5E7246C70D05} = {C1BF93A4-0922-4605-9A0E-D7901AE11DA5}
+		{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD} = {6D268736-6847-4F34-9837-5E7246C70D05}
+		{47CD02DE-9BF1-422F-8498-ADEB4B45A993} = {6D268736-6847-4F34-9837-5E7246C70D05}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47CD02DE-9BF1-422F-8498-ADEB4B45A993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47CD02DE-9BF1-422F-8498-ADEB4B45A993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47CD02DE-9BF1-422F-8498-ADEB4B45A993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47CD02DE-9BF1-422F-8498-ADEB4B45A993}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
