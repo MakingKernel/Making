@@ -1,12 +1,15 @@
 <Project>
-    <PropertyGroup>
-        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1"/>
-        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftPackageVersion)"/>
-        <!-- 新增：源生成器所需依赖版本 -->
-        <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.0" />
-        <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-    </ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
+    <PackageVersion Include="Mapster" Version="7.4.2-pre02" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftPackageVersion)" />
+    <!-- 新增：源生成器所需依赖版本 -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftPackageVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0-preview.5.25277.114" />
+    <PackageVersion Include="Serilog" Version="4.3.1-dev-02373" />
+  </ItemGroup>
 </Project>
