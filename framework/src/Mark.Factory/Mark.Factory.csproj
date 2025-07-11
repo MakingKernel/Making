@@ -5,9 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <!-- 生成器运行时依赖 -->
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     </ItemGroup>
 
     <PropertyGroup>
