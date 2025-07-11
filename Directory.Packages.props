@@ -18,6 +18,13 @@
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftPackageVersion)" />
+    <!-- 缓存相关包版本 -->
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="$(MicrosoftPackageVersion)" />
+    <PackageVersion Include="System.Text.Json" Version="$(MicrosoftPackageVersion)" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.7.33" />
+    <!-- Web API 相关包版本 -->
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(MicrosoftPackageVersion)" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <!-- 测试相关包版本 -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageVersion Include="xunit" Version="2.4.2" />
