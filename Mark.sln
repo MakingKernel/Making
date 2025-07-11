@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Jwt", "framework\src\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.MultiTenancy", "framework\src\Mark.MultiTenancy\Mark.MultiTenancy.csproj", "{EA27ED28-0BAE-4975-9F3C-392E6204E2D5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{22E1CCB8-A148-4172-A000-C48BE0A1E471}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Factory.SimpleTest", "framework\test\Mark.Factory.SimpleTest\Mark.Factory.SimpleTest.csproj", "{21639534-B2BC-4881-A475-99F9EDDB9CA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,8 @@ Global
 		{56BB8522-D9C1-4055-AE02-BDC590C7A6EF} = {6D268736-6847-4F34-9837-5E7246C70D05}
 		{AE4829FA-3A1F-4F90-B3FB-484BFE958F29} = {6D268736-6847-4F34-9837-5E7246C70D05}
 		{EA27ED28-0BAE-4975-9F3C-392E6204E2D5} = {6D268736-6847-4F34-9837-5E7246C70D05}
+		{21639534-B2BC-4881-A475-99F9EDDB9CA1} = {22E1CCB8-A148-4172-A000-C48BE0A1E471}
+		{22E1CCB8-A148-4172-A000-C48BE0A1E471} = {C1BF93A4-0922-4605-9A0E-D7901AE11DA5}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -77,5 +83,9 @@ Global
 		{EA27ED28-0BAE-4975-9F3C-392E6204E2D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA27ED28-0BAE-4975-9F3C-392E6204E2D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA27ED28-0BAE-4975-9F3C-392E6204E2D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21639534-B2BC-4881-A475-99F9EDDB9CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21639534-B2BC-4881-A475-99F9EDDB9CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21639534-B2BC-4881-A475-99F9EDDB9CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21639534-B2BC-4881-A475-99F9EDDB9CA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

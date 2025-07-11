@@ -16,4 +16,13 @@ public sealed class ScopedAttribute : Attribute { }
 /// 标记瞬态生命周期服务。
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class TransientAttribute : Attribute { } 
+public sealed class TransientAttribute : Attribute { }
+
+/// <summary>
+/// 自定义注册类型
+/// </summary>
+/// <param name="serviceType"></param>
+public sealed class RegisterServiceAttribute(Type serviceType) : Attribute
+{
+    public Type ServiceType => serviceType;
+}
