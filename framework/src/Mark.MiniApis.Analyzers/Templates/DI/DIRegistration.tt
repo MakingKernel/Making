@@ -1,0 +1,35 @@
+switch (lifetime)
+{
+    case ServiceLifetime.Singleton:
+<# foreach(var group in Model.ClassGroups) { #>
+<#   if (!string.IsNullOrEmpty(group.Namespace)) { #>
+        // <#= group.Namespace #>
+<#   } #>
+<#   foreach(var classInfo in group.Classes) { #>
+        services.AddSingleton<<#= classInfo.FullTypeName #>>();
+<#   } #>
+<# } #>
+        break;
+
+    case ServiceLifetime.Scoped:
+<# foreach(var group in Model.ClassGroups) { #>
+<#   if (!string.IsNullOrEmpty(group.Namespace)) { #>
+        // <#= group.Namespace #>
+<#   } #>
+<#   foreach(var classInfo in group.Classes) { #>
+        services.AddScoped<<#= classInfo.FullTypeName #>>();
+<#   } #>
+<# } #>
+        break;
+
+    case ServiceLifetime.Transient:
+<# foreach(var group in Model.ClassGroups) { #>
+<#   if (!string.IsNullOrEmpty(group.Namespace)) { #>
+        // <#= group.Namespace #>
+<#   } #>
+<#   foreach(var classInfo in group.Classes) { #>
+        services.AddTransient<<#= classInfo.FullTypeName #>>();
+<#   } #>
+<# } #>
+        break;
+}
