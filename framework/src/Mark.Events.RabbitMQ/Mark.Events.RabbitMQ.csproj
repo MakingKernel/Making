@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Mark.Events.RabbitMQ</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Mark.Events\Mark.Events.csproj" />
+      <ProjectReference Include="..\Mark.RabbitMQ\Mark.RabbitMQ.csproj" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" />
+      <PackageReference Include="RabbitMQ.Client" />
+      <PackageReference Include="System.Text.Json" />
+    </ItemGroup>
+
+</Project>
