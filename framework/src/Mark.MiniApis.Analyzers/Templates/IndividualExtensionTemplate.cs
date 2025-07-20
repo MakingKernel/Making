@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Map {{CLASS_NAME}} endpoints to the web application
         /// </summary>
-        /// <param name="webApplication">The web application</param>
+        /// <param name=""webApplication"">The web application</param>
         /// <returns>The web application for chaining</returns>
         public static WebApplication Map{{METHOD_NAME}}(this WebApplication webApplication)
         {
@@ -99,7 +99,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // Add tags
             if (!string.IsNullOrEmpty(classInfo.Tags))
             {
-                sb.Append($".WithTags("{classInfo.Tags}")");
+                sb.Append($".WithTags(\"{classInfo.Tags}\")");
             }
 
             return sb.ToString();
@@ -118,17 +118,17 @@ namespace Microsoft.Extensions.DependencyInjection
             if (!rolesArg.Equals(default) && !policyArg.Equals(default) && 
                 rolesArg.Value.Value is string roles && policyArg.Value.Value is string policy)
             {
-                return $".RequireAuthorization(p => p.RequireRole("{roles}").RequirePolicy("{policy}"))";
+                return $".RequireAuthorization(p => p.RequireRole(\"{roles}\").RequirePolicy(\"{policy}\"))"
             }
             
             if (!rolesArg.Equals(default) && rolesArg.Value.Value is string role)
             {
-                return $".RequireAuthorization(p => p.RequireRole("{role}"))";
+                return $".RequireAuthorization(p => p.RequireRole(\"{role}\"))"
             }
             
             if (!policyArg.Equals(default) && policyArg.Value.Value is string policyValue)
             {
-                return $".RequireAuthorization("{policyValue}")";
+                return $".RequireAuthorization(\"{policyValue}\")";
             }
             
             return ".RequireAuthorization()";

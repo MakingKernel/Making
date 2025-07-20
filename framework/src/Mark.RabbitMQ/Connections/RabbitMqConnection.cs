@@ -39,59 +39,56 @@ public class RabbitMqConnection : IRabbitMqConnection
         return await _connection!.CreateChannelAsync();
     }
 
-    public bool TryConnect()
+    public async Task<bool> TryConnect()
     {
         _logger.LogInformation("RabbitMQ Client is trying to connect");
 
-        lock (_syncRoot)
+        try
         {
-            try
+            var factory = new ConnectionFactory
             {
-                var factory = new ConnectionFactory
+                HostName = _options.HostName,
+                Port = _options.Port,
+                UserName = _options.UserName,
+                Password = _options.Password,
+                VirtualHost = _options.VirtualHost,
+                ClientProvidedName = _options.ClientProvidedName,
+                AutomaticRecoveryEnabled = true,
+                NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
+                RequestedHeartbeat = TimeSpan.FromSeconds(10)
+            };
+
+            if (_options.UseSsl)
+            {
+                factory.Ssl = new SslOption
                 {
-                    HostName = _options.HostName,
-                    Port = _options.Port,
-                    UserName = _options.UserName,
-                    Password = _options.Password,
-                    VirtualHost = _options.VirtualHost,
-                    ClientProvidedName = _options.ClientProvidedName,
-                    AutomaticRecoveryEnabled = true,
-                    NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
-                    RequestedHeartbeat = TimeSpan.FromSeconds(10)
+                    Enabled = true,
+                    ServerName = _options.SslServerName,
+                    CertPath = _options.SslCertPath,
+                    CertPassphrase = _options.SslCertPassphrase
                 };
-
-                if (_options.UseSsl)
-                {
-                    factory.Ssl = new SslOption
-                    {
-                        Enabled = true,
-                        ServerName = _options.SslServerName,
-                        CertPath = _options.SslCertPath,
-                        CertPassphrase = _options.SslCertPassphrase
-                    };
-                }
-
-                _connection = factory.CreateConnection();
-                _connection.ConnectionShutdown += OnConnectionShutdown;
-                _connection.CallbackException += OnCallbackException;
-                _connection.ConnectionBlocked += OnConnectionBlocked;
-
-                _logger.LogInformation(
-                    "RabbitMQ Client acquired a persistent connection to '{HostName}' and is subscribed to failure events",
-                    _options.HostName);
-
-                return true;
             }
-            catch (BrokerUnreachableException ex)
-            {
-                _logger.LogError(ex, "RabbitMQ Client could not connect after {Timeout}s", 5);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "RabbitMQ Client could not connect");
-                return false;
-            }
+
+            _connection = await factory.CreateConnectionAsync();
+            _connection.ConnectionShutdownAsync += OnConnectionShutdown;
+            _connection.CallbackExceptionAsync += OnCallbackException;
+            _connection.ConnectionBlockedAsync += OnConnectionBlocked;
+
+            _logger.LogInformation(
+                "RabbitMQ Client acquired a persistent connection to '{HostName}' and is subscribed to failure events",
+                _options.HostName);
+
+            return true;
+        }
+        catch (BrokerUnreachableException ex)
+        {
+            _logger.LogError(ex, "RabbitMQ Client could not connect after {Timeout}s", 5);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "RabbitMQ Client could not connect");
+            return false;
         }
     }
 
@@ -111,27 +108,27 @@ public class RabbitMqConnection : IRabbitMqConnection
         }
     }
 
-    private void OnConnectionBlocked(object? sender, ConnectionBlockedEventArgs e)
+    private async Task OnConnectionBlocked(object? sender, ConnectionBlockedEventArgs e)
     {
         if (_disposed) return;
 
         _logger.LogWarning("A RabbitMQ connection is shutdown. Trying to re-connect...");
-        TryConnect();
+        await TryConnect();
     }
 
-    private void OnCallbackException(object? sender, CallbackExceptionEventArgs e)
+    private async Task OnCallbackException(object? sender, CallbackExceptionEventArgs e)
     {
         if (_disposed) return;
 
         _logger.LogWarning("A RabbitMQ connection throw exception. Trying to re-connect...");
-        TryConnect();
+        await TryConnect();
     }
 
-    private void OnConnectionShutdown(object? sender, ShutdownEventArgs reason)
+    private async Task OnConnectionShutdown(object? sender, ShutdownEventArgs reason)
     {
         if (_disposed) return;
 
         _logger.LogWarning("A RabbitMQ connection is on shutdown. Trying to re-connect...");
-        TryConnect();
+        await TryConnect();
     }
 }

@@ -25,8 +25,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Register all MiniApi classes with the specified service lifetime
         /// </summary>
-        /// <param name="services">The service collection</param>
-        /// <param name="lifetime">The service lifetime (default: Scoped)</param>
+        /// <param name=""services"">The service collection</param>
+        /// <param name=""lifetime"">The service lifetime (default: Scoped)</param>
         /// <returns>The service collection for chaining</returns>
         public static IServiceCollection AddMiniApis(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Scoped)
         {
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Map all MiniApi endpoints to the web application
         /// </summary>
-        /// <param name="webApplication">The web application</param>
+        /// <param name=""webApplication"">The web application</param>
         /// <returns>The web application for chaining</returns>
         public static WebApplication MapMiniApis(this WebApplication webApplication)
         {

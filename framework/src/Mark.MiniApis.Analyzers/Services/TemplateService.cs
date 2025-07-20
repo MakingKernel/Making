@@ -26,8 +26,8 @@ namespace Mark.MiniApis.Analyzers.Services
             template.AppendLine("        /// <summary>");
             template.AppendLine("        /// Register all MiniApi classes with the specified service lifetime");
             template.AppendLine("        /// </summary>");
-            template.AppendLine("        /// <param name="services">The service collection</param>");
-            template.AppendLine("        /// <param name="lifetime">The service lifetime (default: Scoped)</param>");
+            template.AppendLine("        /// <param name=\"services\">The service collection</param>");
+            template.AppendLine("        /// <param name=\"lifetime\">The service lifetime (default: Scoped)</param>");
             template.AppendLine("        /// <returns>The service collection for chaining</returns>");
             template.AppendLine("        public static IServiceCollection AddMiniApis(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Scoped)");
             template.AppendLine("        {");
@@ -38,7 +38,7 @@ namespace Mark.MiniApis.Analyzers.Services
             template.AppendLine("        /// <summary>");
             template.AppendLine("        /// Map all MiniApi endpoints to the web application");
             template.AppendLine("        /// </summary>");
-            template.AppendLine("        /// <param name="webApplication">The web application</param>");
+            template.AppendLine("        /// <param name=\"webApplication\">The web application</param>");
             template.AppendLine("        /// <returns>The web application for chaining</returns>");
             template.AppendLine("        public static WebApplication MapMiniApis(this WebApplication webApplication)");
             template.AppendLine("        {");

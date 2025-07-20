@@ -22,5 +22,5 @@ public interface IRabbitMqConnection : IDisposable
     /// Tries to connect to RabbitMQ.
     /// </summary>
     /// <returns>True if connection was successful, false otherwise.</returns>
-    bool TryConnect();
+    Task<bool> TryConnect();
 }
