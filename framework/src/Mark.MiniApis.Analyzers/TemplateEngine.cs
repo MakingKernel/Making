@@ -16,21 +16,13 @@ namespace Mark.MiniApis.Analyzers
         {
             _templatesDirectory = templatesDirectory;
             _templates = new Dictionary<string, string>();
-            LoadTemplates();
+            // LoadTemplates() removed - not allowed in analyzers
         }
 
-        private void LoadTemplates()
+        // LoadTemplates method removed - file I/O not allowed in analyzers
+        public void AddTemplate(string templateName, string template)
         {
-            if (!Directory.Exists(_templatesDirectory))
-                return;
-
-            var templateFiles = Directory.GetFiles(_templatesDirectory, "*.tt", SearchOption.AllDirectories);
-            foreach (var file in templateFiles)
-            {
-                var relativePath = Path.GetRelativePath(_templatesDirectory, file);
-                var templateName = relativePath.Replace("\\", "/").Replace(".tt", "");
-                _templates[templateName] = File.ReadAllText(file);
-            }
+            _templates[templateName] = template;
         }
 
         public string Render(string templateName, object model)

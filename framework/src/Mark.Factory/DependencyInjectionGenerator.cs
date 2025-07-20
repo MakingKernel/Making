@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -10,30 +13,53 @@ namespace Mark.Factory;
 /// 依赖注入注册源生成器。
 /// </summary>
 [Generator]
-public sealed class DependencyInjectionGenerator : ISourceGenerator
+public sealed class DependencyInjectionGenerator : IIncrementalGenerator
 {
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
 #if DEBUG
         // 调试时可启用以下行以便附加调试器
         // if (!System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Launch();
 #endif
-        // 注册语法接收器，用于收集带有特性的类声明
-        context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
+        
+        // 创建增量数据源，收集带有特定属性的类声明
+        var classDeclarations = context.SyntaxProvider
+            .CreateSyntaxProvider(
+                predicate: static (s, _) => IsSyntaxTargetForGeneration(s),
+                transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx))
+            .Where(static m => m is not null);
+
+        // 合并编译信息和类声明
+        var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
+
+        // 注册源生成器
+        context.RegisterSourceOutput(compilationAndClasses, static (spc, source) => Execute(source.Left, source.Right, spc));
     }
 
-    public void Execute(GeneratorExecutionContext context)
+    private static bool IsSyntaxTargetForGeneration(SyntaxNode node)
     {
-        if (context.SyntaxReceiver is not SyntaxReceiver receiver || receiver.CandidateClasses.Count == 0)
+        return node is ClassDeclarationSyntax classDecl && classDecl.AttributeLists.Count > 0;
+    }
+
+    private static INamedTypeSymbol? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
+    {
+        var classDeclaration = (ClassDeclarationSyntax)context.Node;
+        var symbol = context.SemanticModel.GetDeclaredSymbol(classDeclaration);
+        return symbol as INamedTypeSymbol;
+    }
+
+    private static void Execute(Compilation compilation, ImmutableArray<INamedTypeSymbol?> classes, SourceProductionContext context)
+    {
+        if (classes.Length == 0)
         {
             return;
         }
 
         // 获取特性类型符号
-        INamedTypeSymbol? singletonAttr = context.Compilation.GetTypeByMetadataName("Mark.SingletonAttribute");
-        INamedTypeSymbol? scopedAttr = context.Compilation.GetTypeByMetadataName("Mark.ScopedAttribute");
-        INamedTypeSymbol? transientAttr = context.Compilation.GetTypeByMetadataName("Mark.TransientAttribute");
-        INamedTypeSymbol? registerServiceAttr = context.Compilation.GetTypeByMetadataName("Mark.RegisterServiceAttribute");
+        INamedTypeSymbol? singletonAttr = compilation.GetTypeByMetadataName("Mark.SingletonAttribute");
+        INamedTypeSymbol? scopedAttr = compilation.GetTypeByMetadataName("Mark.ScopedAttribute");
+        INamedTypeSymbol? transientAttr = compilation.GetTypeByMetadataName("Mark.TransientAttribute");
+        INamedTypeSymbol? registerServiceAttr = compilation.GetTypeByMetadataName("Mark.RegisterServiceAttribute");
 
         if (singletonAttr is null && scopedAttr is null && transientAttr is null)
         {
@@ -43,30 +69,29 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
         var registrations = new List<(string Lifetime, string ImplementationType, string? ServiceType)>();
         var seen = new HashSet<string>();
 
-        // 1. 处理当前项目中的候选类（通过 SyntaxReceiver 收集，性能最优）
-        foreach (var classDecl in receiver.CandidateClasses)
+        // 1. 处理收集到的类型
+        foreach (var typeSymbol in classes)
         {
-            var model = context.Compilation.GetSemanticModel(classDecl.SyntaxTree);
-            if (model.GetDeclaredSymbol(classDecl) is not INamedTypeSymbol typeSymbol)
-                continue;
-
-            TryAdd(typeSymbol);
+            if (typeSymbol is not null)
+            {
+                TryAdd(typeSymbol);
+            }
         }
 
         // 2. 处理所有引用的程序集（包括自身 Assembly），以支持扫描其他项目/库中的类型
-        foreach (var assembly in context.Compilation.SourceModule.ReferencedAssemblySymbols)
+        foreach (var assembly in compilation.SourceModule.ReferencedAssemblySymbols)
         {
             TraverseNamespace(assembly.GlobalNamespace);
         }
 
-        // 也扫描当前 Assembly 内未被 SyntaxReceiver 捕获（例如通过反射动态生成的代码）
-        TraverseNamespace(context.Compilation.Assembly.GlobalNamespace);
+        // 也扫描当前 Assembly 内未被收集器捕获的类型
+        TraverseNamespace(compilation.Assembly.GlobalNamespace);
 
         if (registrations.Count == 0)
             return;
 
         // 获取当前项目名称，用于生成唯一的文件名和方法名
-        string projectName = GetProjectName(context.Compilation.AssemblyName);
+        string projectName = GetProjectName(compilation.AssemblyName);
         GenerateSource(context, registrations, projectName);
 
         // 本地函数：尝试添加注册项
@@ -163,7 +188,7 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
         return null;
     }
 
-    private static void GenerateSource(GeneratorExecutionContext context,
+    private static void GenerateSource(SourceProductionContext context,
         List<(string Lifetime, string ImplementationType, string? ServiceType)> regs,
         string projectName)
     {
@@ -277,17 +302,4 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
         return string.IsNullOrEmpty(projectName) ? "Unknown" : projectName;
     }
 
-    private sealed class SyntaxReceiver : ISyntaxReceiver
-    {
-        public List<ClassDeclarationSyntax> CandidateClasses { get; } = new();
-
-        public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
-        {
-            // 仅关注包含特性的类声明
-            if (syntaxNode is ClassDeclarationSyntax classDecl && classDecl.AttributeLists.Count > 0)
-            {
-                CandidateClasses.Add(classDecl);
-            }
-        }
-    }
 }

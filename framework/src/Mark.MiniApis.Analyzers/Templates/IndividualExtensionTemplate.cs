@@ -31,7 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The web application for chaining</returns>
         public static WebApplication Map{{METHOD_NAME}}(this WebApplication webApplication)
         {
-            var {{INSTANCE_NAME}} = webApplication.MapGroup("{{ROUTE}}"){{CLASS_ATTRIBUTES}};
+            var {{INSTANCE_NAME}} = webApplication.MapGroup(""{{ROUTE}}""){{CLASS_ATTRIBUTES}};
 
 {{METHOD_MAPPINGS}}
             return webApplication;
@@ -118,12 +118,12 @@ namespace Microsoft.Extensions.DependencyInjection
             if (!rolesArg.Equals(default) && !policyArg.Equals(default) && 
                 rolesArg.Value.Value is string roles && policyArg.Value.Value is string policy)
             {
-                return $".RequireAuthorization(p => p.RequireRole(\"{roles}\").RequirePolicy(\"{policy}\"))"
+                return $".RequireAuthorization(p => p.RequireRole(\"{roles}\").RequirePolicy(\"{policy}\"))";
             }
             
             if (!rolesArg.Equals(default) && rolesArg.Value.Value is string role)
             {
-                return $".RequireAuthorization(p => p.RequireRole(\"{role}\"))"
+                return $".RequireAuthorization(p => p.RequireRole(\"{role}\"))";
             }
             
             if (!policyArg.Equals(default) && policyArg.Value.Value is string policyValue)

@@ -67,7 +67,7 @@ namespace Mark.MiniApis.Analyzers.Services
 
             var route = GetAttributeProperty(miniApiAttr, "Route") as string ??
                        miniApiAttr.ConstructorArguments.FirstOrDefault().Value as string ??
-                       $"/{className.TrimEnd(MiniApiConstants.ServiceSuffix).ToLowerInvariant()}";
+                       $"/{(className.EndsWith(MiniApiConstants.ServiceSuffix) ? className.Substring(0, className.Length - MiniApiConstants.ServiceSuffix.Length) : className).ToLowerInvariant()}";
 
             var tags = GetAttributeProperty(miniApiAttr, "Tags") as string;
 

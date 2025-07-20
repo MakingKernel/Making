@@ -182,7 +182,7 @@ namespace Mark.MiniApis.Analyzers
             // 获取路由配置
             var route = GetAttributeProperty(miniApiAttr, "Route") as string ??
                         miniApiAttr.ConstructorArguments.FirstOrDefault().Value as string ??
-                        $"/{className.TrimEnd(ServiceSuffix).ToLowerInvariant()}";
+                        $"/{(className.EndsWith(ServiceSuffix) ? className.Substring(0, className.Length - ServiceSuffix.Length) : className).ToLowerInvariant()}";
 
             // 获取标签配置
             var tags = GetAttributeProperty(miniApiAttr, "Tags") as string;
@@ -454,14 +454,14 @@ namespace Mark.MiniApis.Analyzers
 
         private static string GenerateMapMethodName(string className)
         {
-            var baseName = className.TrimEnd(ServiceSuffix);
+            var baseName = className.EndsWith(ServiceSuffix) ? className.Substring(0, className.Length - ServiceSuffix.Length) : className;
             return baseName.ToString();
         }
 
         private static string GenerateInstanceName(string className)
         {
-            var baseName = className.TrimEnd(ServiceSuffix);
-            return char.ToLowerInvariant(baseName[0]) + baseName[1..];
+            var baseName = className.EndsWith(ServiceSuffix) ? className.Substring(0, className.Length - ServiceSuffix.Length) : className;
+            return char.ToLowerInvariant(baseName[0]) + baseName.Substring(1);
         }
 
         private string GenerateClassAttributes(ClassInfo classInfo)

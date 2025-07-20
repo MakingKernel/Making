@@ -6,13 +6,13 @@ namespace Mark.MiniApis.Analyzers.Services
     {
         public static string GenerateMapMethodName(string className)
         {
-            var baseName = className.TrimEnd(MiniApiConstants.ServiceSuffix);
+            var baseName = className.EndsWith(MiniApiConstants.ServiceSuffix) ? className.Substring(0, className.Length - MiniApiConstants.ServiceSuffix.Length) : className;
             return baseName;
         }
 
         public static string GenerateInstanceName(string className)
         {
-            var baseName = className.TrimEnd(MiniApiConstants.ServiceSuffix);
+            var baseName = className.EndsWith(MiniApiConstants.ServiceSuffix) ? className.Substring(0, className.Length - MiniApiConstants.ServiceSuffix.Length) : className;
             return char.ToLowerInvariant(baseName[0]) + baseName.Substring(1);
         }
 
