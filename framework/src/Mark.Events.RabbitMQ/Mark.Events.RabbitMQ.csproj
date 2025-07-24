@@ -5,6 +5,13 @@
         <RootNamespace>Mark.Events.RabbitMQ</RootNamespace>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.Events.RabbitMQ</PackageId>
+        <Description>RabbitMQ event bus implementation for the Mark framework</Description>
+        <PackageTags>mark, framework, rabbitmq, events, messaging, event-bus</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Mark.Events\Mark.Events.csproj" />
       <ProjectReference Include="..\Mark.RabbitMQ\Mark.RabbitMQ.csproj" />

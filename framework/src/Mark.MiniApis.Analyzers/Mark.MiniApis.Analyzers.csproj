@@ -14,6 +14,13 @@
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
     </ItemGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.MiniApis.Analyzers</PackageId>
+        <Description>Code analyzers and source generators for Mark Mini APIs</Description>
+        <PackageTags>mark, framework, analyzers, source-generators, roslyn, mini-apis</PackageTags>
+    </PropertyGroup>
+
     <PropertyGroup>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- Generates a package at build -->
         <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->

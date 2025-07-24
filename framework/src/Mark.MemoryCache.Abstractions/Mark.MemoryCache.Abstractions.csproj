@@ -5,4 +5,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.MemoryCache.Abstractions</PackageId>
+        <Description>Memory cache abstractions and interfaces for the Mark framework</Description>
+        <PackageTags>mark, framework, memory-cache, abstractions, caching</PackageTags>
+    </PropertyGroup>
+
 </Project>

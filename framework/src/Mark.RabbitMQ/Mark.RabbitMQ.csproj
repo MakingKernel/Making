@@ -5,6 +5,13 @@
         <RootNamespace>Mark.RabbitMQ</RootNamespace>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.RabbitMQ</PackageId>
+        <Description>RabbitMQ client utilities and extensions for the Mark framework</Description>
+        <PackageTags>mark, framework, rabbitmq, messaging, client</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="RabbitMQ.Client" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" />

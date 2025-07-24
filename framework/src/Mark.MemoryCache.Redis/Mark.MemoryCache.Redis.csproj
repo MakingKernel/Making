@@ -5,6 +5,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.MemoryCache.Redis</PackageId>
+        <Description>Redis-based memory cache implementation for the Mark framework</Description>
+        <PackageTags>mark, framework, redis, memory-cache, caching, distributed-cache</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Mark.Core\Mark.Core.csproj" />
       <ProjectReference Include="..\Mark.MemoryCache.Abstractions\Mark.MemoryCache.Abstractions.csproj" />

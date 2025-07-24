@@ -593,14 +593,30 @@ namespace Mark.MiniApis.Analyzers
                 var parameterList = string.Join(", ", parameters.Select(p => $"{p.Type.ToDisplayString()} {p.Name}"));
                 var parameterNames = string.Join(", ", parameters.Select(p => p.Name));
 
+                // 检查方法是否为异步方法
+                bool isAsync = IsAsyncMethod(method);
+                
                 if (parameters.Length > 0)
                 {
-                    lambda =
-                        $"async ({fullTypeName} {serviceInstance}, {parameterList}) => await {serviceInstance}.{method.Name}({parameterNames})";
+                    if (isAsync)
+                    {
+                        lambda = $"async ({fullTypeName} {serviceInstance}, {parameterList}) => await {serviceInstance}.{method.Name}({parameterNames})";
+                    }
+                    else
+                    {
+                        lambda = $"({fullTypeName} {serviceInstance}, {parameterList}) => {serviceInstance}.{method.Name}({parameterNames})";
+                    }
                 }
                 else
                 {
-                    lambda = $"async ({fullTypeName} {serviceInstance}) => await {serviceInstance}.{method.Name}()";
+                    if (isAsync)
+                    {
+                        lambda = $"async ({fullTypeName} {serviceInstance}) => await {serviceInstance}.{method.Name}()";
+                    }
+                    else
+                    {
+                        lambda = $"({fullTypeName} {serviceInstance}) => {serviceInstance}.{method.Name}()";
+                    }
                 }
             }
 
@@ -691,11 +707,32 @@ namespace Mark.MiniApis.Analyzers
                 callParams.Add(newInstance);
             }
 
-            var methodCall = callParams.Any()
-                ? $"await {serviceInstance}.{methodName}({string.Join(", ", callParams)})"
-                : $"await {serviceInstance}.{methodName}()";
+            // 检查方法是否为异步方法
+            var method = parameters.Length > 0 ? 
+                compilation.GetSymbolsWithName(methodName).OfType<IMethodSymbol>()
+                    .FirstOrDefault(m => m.ContainingType.ToDisplayString() == fullTypeName) : null;
+            
+            bool isAsync = method != null && IsAsyncMethod(method);
+            
+            string methodCall;
+            string lambdaPrefix;
+            
+            if (isAsync)
+            {
+                methodCall = callParams.Any()
+                    ? $"await {serviceInstance}.{methodName}({string.Join(", ", callParams)})"
+                    : $"await {serviceInstance}.{methodName}()";
+                lambdaPrefix = "async ";
+            }
+            else
+            {
+                methodCall = callParams.Any()
+                    ? $"{serviceInstance}.{methodName}({string.Join(", ", callParams)})"
+                    : $"{serviceInstance}.{methodName}()";
+                lambdaPrefix = "";
+            }
 
-            return $"async ({parameterList}) => {methodCall}";
+            return $"{lambdaPrefix}({parameterList}) => {methodCall}";
         }
 
         private static bool IsSimpleType(ITypeSymbol type, Compilation compilation)
@@ -741,13 +778,31 @@ namespace Mark.MiniApis.Analyzers
 
         private static List<IPropertySymbol> GetPublicProperties(ITypeSymbol type)
         {
-            return type.GetMembers()
-                .OfType<IPropertySymbol>()
-                .Where(p => p.DeclaredAccessibility == Accessibility.Public &&
-                            p.GetMethod != null &&
-                            p.SetMethod != null &&
-                            !p.IsStatic)
-                .ToList();
+            var properties = new List<IPropertySymbol>();
+            var visitedProperties = new HashSet<string>();
+
+            // 获取当前类型及所有基类的属性
+            var currentType = type;
+            while (currentType != null && currentType.SpecialType != SpecialType.System_Object)
+            {
+                var currentProperties = currentType.GetMembers()
+                    .OfType<IPropertySymbol>()
+                    .Where(p => p.DeclaredAccessibility == Accessibility.Public &&
+                                p.GetMethod != null &&
+                                p.SetMethod != null &&
+                                !p.IsStatic &&
+                                !visitedProperties.Contains(p.Name)); // 避免重复添加被覆写的属性
+
+                foreach (var prop in currentProperties)
+                {
+                    properties.Add(prop);
+                    visitedProperties.Add(prop.Name);
+                }
+
+                currentType = currentType.BaseType;
+            }
+
+            return properties;
         }
 
         private static bool CanInstantiate(ITypeSymbol type)
@@ -789,6 +844,18 @@ namespace Mark.MiniApis.Analyzers
             }
 
             return true;
+        }
+
+        private static bool IsAsyncMethod(IMethodSymbol method)
+        {
+            var returnType = method.ReturnType;
+            var returnTypeName = returnType.ToDisplayString();
+            
+            // 检查返回类型是否为Task、Task<T>、ValueTask或ValueTask<T>
+            return returnTypeName == "System.Threading.Tasks.Task" ||
+                   returnTypeName.StartsWith("System.Threading.Tasks.Task<") ||
+                   returnTypeName == "System.Threading.Tasks.ValueTask" ||
+                   returnTypeName.StartsWith("System.Threading.Tasks.ValueTask<");
         }
 
         private (string httpMethod, string route) DetermineHttpMethodAndRoute(IMethodSymbol method)

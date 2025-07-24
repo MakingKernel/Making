@@ -6,6 +6,19 @@
         <MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">9.0.0</MicrosoftPackageVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Version>1.0.0</Version>
+        <Version>1.0.0-preview</Version>
+    </PropertyGroup>
+
+    <!-- Common NuGet Package Configuration -->
+    <PropertyGroup>
+        <Authors>token@mark-chat.chat</Authors>
+        <Company>Mark Chat</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/markframework/Mark</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/markframework/Mark</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 </Project>

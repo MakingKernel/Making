@@ -5,6 +5,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.Jwt</PackageId>
+        <Description>JWT authentication and authorization support for the Mark framework</Description>
+        <PackageTags>mark, framework, jwt, authentication, security</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="System.IdentityModel.Tokens.Jwt"  />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />

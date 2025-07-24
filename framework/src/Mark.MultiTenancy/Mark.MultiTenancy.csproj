@@ -5,6 +5,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.MultiTenancy</PackageId>
+        <Description>Multi-tenancy implementation and services for the Mark framework</Description>
+        <PackageTags>mark, framework, multi-tenancy, tenant, implementation</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Mark.Core\Mark.Core.csproj" />
       <ProjectReference Include="..\Mark.MultiTenancy.Abstractions\Mark.MultiTenancy.Abstractions.csproj" />

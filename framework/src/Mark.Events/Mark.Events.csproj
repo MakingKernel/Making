@@ -5,6 +5,13 @@
         <RootNamespace>Mark.Events</RootNamespace>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.Events</PackageId>
+        <Description>Event abstractions and base implementations for the Mark framework</Description>
+        <PackageTags>mark, framework, events, event-driven, messaging</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Mark.Core\Mark.Core.csproj" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" />

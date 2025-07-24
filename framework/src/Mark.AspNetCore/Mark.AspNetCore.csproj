@@ -6,4 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Mark.AspNetCore</PackageId>
+        <Description>ASP.NET Core integration and extensions for the Mark framework</Description>
+        <PackageTags>mark, framework, aspnetcore, web</PackageTags>
+    </PropertyGroup>
+
 </Project>
