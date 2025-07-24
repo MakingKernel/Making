@@ -1,4 +1,4 @@
-using Mark;
+using Mark.Core;
 
 namespace Mark.Factory.SimpleTest;
 

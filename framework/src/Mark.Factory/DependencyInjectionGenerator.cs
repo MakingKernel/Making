@@ -32,6 +32,7 @@ namespace Mark.Factory
             "OpenGenericAttribute", "MultipleAttribute", "HostedServiceAttribute", 
             "ConfigureAttribute", "RegisterServiceAttribute", "PriorityAttribute"
         };
+        
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
@@ -50,7 +51,7 @@ namespace Mark.Factory
             // Get referenced classes from assemblies
             var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
 
-            // Register source output
+            // Register source output with duplicate prevention
             context.RegisterSourceOutput(compilationAndClasses, 
                 static (spc, source) => Execute(source.Left, source.Right, spc));
         }
@@ -85,6 +86,9 @@ namespace Mark.Factory
             var services = new List<ServiceInfo>();
             var seen = new HashSet<string>();
             var typeSymbols = new Dictionary<ServiceInfo, INamedTypeSymbol>();
+            
+            // Track already processed to prevent duplicate class generation
+            var processedAssemblies = new HashSet<string>();
 
             // Process collected classes with validation
             foreach (var serviceInfo in classes)
@@ -121,15 +125,21 @@ namespace Mark.Factory
             if (!services.Any())
                 return;
 
+            // Remove duplicates based on implementation type and service type
+            var uniqueServices = services
+                .GroupBy(s => new { s.ImplementationType, s.ServiceType, s.Key })
+                .Select(g => g.OrderBy(s => s.Priority).First())
+                .ToList();
+
             // Validate service conflicts
-            ServiceValidation.ValidateServiceConflicts(services, context);
+            ServiceValidation.ValidateServiceConflicts(uniqueServices, context);
 
             // Sort services by priority
-            services.Sort((a, b) => a.Priority.CompareTo(b.Priority));
+            uniqueServices.Sort((a, b) => a.Priority.CompareTo(b.Priority));
 
             // Generate source files
             string projectName = GetProjectName(compilation.AssemblyName);
-            GenerateSource(context, services, projectName);
+            GenerateSource(context, uniqueServices, projectName);
         }
 
         private static Dictionary<string, INamedTypeSymbol> GetAttributeSymbols(Compilation compilation)
@@ -138,7 +148,7 @@ namespace Mark.Factory
             
             foreach (var attrName in LifetimeAttributes.Concat(AdvancedAttributes))
             {
-                var symbol = compilation.GetTypeByMetadataName($"Mark.{attrName}");
+                var symbol = compilation.GetTypeByMetadataName($"Mark.Core.{attrName}");
                 if (symbol is not null)
                 {
                     symbols[attrName] = symbol;
@@ -248,6 +258,12 @@ namespace Mark.Factory
             foreach (var attr in attributes)
             {
                 var attrName = attr.AttributeClass?.Name;
+                var attrNamespace = attr.AttributeClass?.ContainingNamespace?.ToDisplayString();
+                
+                // Only check attributes from Mark.Core namespace
+                if (attrNamespace != "Mark.Core")
+                    continue;
+                    
                 switch (attrName)
                 {
                     case "SingletonAttribute":
@@ -268,6 +284,11 @@ namespace Mark.Factory
             foreach (var attr in attributes)
             {
                 var attrName = attr.AttributeClass?.Name;
+                var attrNamespace = attr.AttributeClass?.ContainingNamespace?.ToDisplayString();
+                
+                // Only process attributes from Mark.Core namespace
+                if (attrNamespace != "Mark.Core")
+                    continue;
                 
                 switch (attrName)
                 {
@@ -457,7 +478,7 @@ namespace Mark.Factory
         {
             string cleanProjectName = CleanProjectName(projectName);
             
-            // Generate main extensions file
+            // Generate main extensions file with unique filename to prevent duplicates
             GenerateMainExtensionsFile(context, services, cleanProjectName);
             
             // Generate registration type specific files
@@ -514,7 +535,11 @@ namespace Mark.Factory
             sb.AppendLine("    }");
             sb.AppendLine("}");
 
-            context.AddSource(fileName, SourceText.From(sb.ToString(), Encoding.UTF8));
+            // Only generate if we have services to register
+            if (services.Any())
+            {
+                context.AddSource(fileName, SourceText.From(sb.ToString(), Encoding.UTF8));
+            }
         }
 
         private static string GenerateServiceRegistration(ServiceInfo service)
