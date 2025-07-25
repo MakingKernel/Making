@@ -12,7 +12,7 @@
     <PropertyGroup>
         <Authors>token@mark-chat.chat</Authors>
         <Company>MakingKernel</Company>
-        <Description>Making framework for building modern applications</Description>
+        <Description>Making framework for building modern applications </Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/MakingKernel/Making</PackageProjectUrl>
         <RepositoryUrl>https://github.com/MakingKernel/Making</RepositoryUrl>
