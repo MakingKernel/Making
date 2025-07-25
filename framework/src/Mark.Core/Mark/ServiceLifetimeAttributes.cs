@@ -1,6 +1,6 @@
 using System;
 
-namespace Mark.Core;
+namespace Mark;
 
 /// <summary>
 /// 标记单例生命周期服务。

@@ -66,7 +66,7 @@ namespace Mark.Factory
                            (a.AttributeClass.Name == "SingletonAttribute" ||
                             a.AttributeClass.Name == "ScopedAttribute" ||
                             a.AttributeClass.Name == "TransientAttribute") &&
-                           a.AttributeClass.ContainingNamespace?.ToDisplayString() == "Mark.Core")
+                           a.AttributeClass.ContainingNamespace?.ToDisplayString() == "Mark")
                 .ToList();
 
             if (lifetimeAttrs.Count == 0)
@@ -316,7 +316,7 @@ namespace Mark.Factory
             // Report auto-detected interfaces
             if (serviceInfo.ServiceType != null && !serviceInfo.AllAttributes
                 .Any(a => a.AttributeClass?.Name == "RegisterServiceAttribute" && 
-                         a.AttributeClass.ContainingNamespace?.ToDisplayString() == "Mark.Core"))
+                         a.AttributeClass.ContainingNamespace?.ToDisplayString() == "Mark"))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.AutoInterfaceDetected,

@@ -2,11 +2,12 @@
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+        <RootNamespace>Mark.Factory</RootNamespace>
     </PropertyGroup>
 
     <!-- NuGet Package Configuration -->
     <PropertyGroup>
-        <PackageId>Mark.Factory</PackageId>
+        <PackageId>Mark.Analyzers</PackageId>
         <Description>Dependency injection source generator for the Mark framework</Description>
         <PackageTags>mark, framework, dependency-injection, source-generator, roslyn</PackageTags>
     </PropertyGroup>

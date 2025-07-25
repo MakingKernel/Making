@@ -1,5 +1,3 @@
-using Mark.Core;
-
 namespace Mark.Factory.SimpleTest;
 
 public interface ISimpleService

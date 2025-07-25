@@ -10,7 +10,7 @@ namespace Mark.Factory
     /// </summary>
     internal static class DiagnosticDescriptors
     {
-        private const string Category = "Mark.Factory";
+        private const string Category = "Mark.Analyzers";
 
         // Error diagnostics
         public static readonly DiagnosticDescriptor MissingLifetimeAttribute = new(

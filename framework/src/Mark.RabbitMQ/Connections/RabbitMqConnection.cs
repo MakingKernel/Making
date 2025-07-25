@@ -15,7 +15,6 @@ public class RabbitMqConnection : IRabbitMqConnection
 {
     private readonly ILogger<RabbitMqConnection> _logger;
     private readonly RabbitMqOptions _options;
-    private readonly object _syncRoot = new();
     private IConnection? _connection;
     private bool _disposed;
 

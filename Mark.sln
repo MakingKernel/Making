@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6D268736-684
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Core", "framework\src\Mark.Core\Mark.Core.csproj", "{CF31EF7A-036B-4A88-98CA-6CA245CB6DAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Factory", "framework\src\Mark.Factory\Mark.Factory.csproj", "{47CD02DE-9BF1-422F-8498-ADEB4B45A993}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Analyzers", "framework\src\Mark.Analyzers\Mark.Analyzers.csproj", "{47CD02DE-9BF1-422F-8498-ADEB4B45A993}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mark.Mapster", "framework\src\Mark.Mapster\Mark.Mapster.csproj", "{CD81929B-B875-4E1A-B15B-8ED33621AAB7}"
 EndProject
