@@ -9,7 +9,6 @@
         <Version>1.0.0-preview</Version>
     </PropertyGroup>
 
-    <!-- Common NuGet Package Configuration -->
     <PropertyGroup>
         <Authors>token@mark-chat.chat</Authors>
         <Company>Making Chat</Company>
