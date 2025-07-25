@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <IsPackable>false</IsPackable>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
     
