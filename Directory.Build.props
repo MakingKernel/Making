@@ -11,7 +11,7 @@
 
     <PropertyGroup>
         <Authors>token@mark-chat.chat</Authors>
-        <Company>Making Chat</Company>
+        <Company>MakingKernel</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/MakingKernel/Making</PackageProjectUrl>
         <RepositoryUrl>https://github.com/MakingKernel/Making</RepositoryUrl>
