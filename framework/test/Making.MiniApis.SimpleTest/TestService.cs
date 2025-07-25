@@ -2,7 +2,7 @@
 
 namespace Making.MiniApis.SimpleTest;
 
-[MiniApi]
+[MiniApi(Route = "/api/v1/test")]
 public class TestService
 {
     public string GetDemo(GetTestInput input)
@@ -12,7 +12,6 @@ public class TestService
 
     public class GetTestInput : PageInput
     {
-
     }
 
     public class PageInput

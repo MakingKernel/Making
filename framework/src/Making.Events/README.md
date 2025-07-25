@@ -51,7 +51,7 @@ public class UserCreatedEventHandler : IEventHandler<UserCreatedEvent>
 ### Register Services
 
 ```csharp
-services.AddMarkEvents();
+services.AddMakingEvents();
 services.AddScoped<IEventHandler<UserCreatedEvent>, UserCreatedEventHandler>();
 ```
 

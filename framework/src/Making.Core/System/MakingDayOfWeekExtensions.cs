@@ -3,7 +3,7 @@
 /// <summary>
 /// Extension methods for the <see cref="DayOfWeek"/>.
 /// </summary>
-public static class MarkDayOfWeekExtensions
+public static class MakingDayOfWeekExtensions
 {
     /// <summary>
     /// Check if given <see cref="DayOfWeek"/> value is weekend.

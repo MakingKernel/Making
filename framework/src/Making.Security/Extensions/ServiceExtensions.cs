@@ -32,7 +32,7 @@ public static class CurrentUserExtensions
 
     public static Guid? FindImpersonatorTenantId(this ICurrentUser currentUser)
     {
-        var impersonatorTenantId = currentUser.FindClaimValue(MarkClaimType.ImpersonatorTenantId);
+        var impersonatorTenantId = currentUser.FindClaimValue(MakingClaimType.ImpersonatorTenantId);
         if (impersonatorTenantId.IsNullOrWhiteSpace())
         {
             return null;
@@ -48,7 +48,7 @@ public static class CurrentUserExtensions
 
     public static Guid? FindImpersonatorUserId(this ICurrentUser currentUser)
     {
-        var impersonatorUserId = currentUser.FindClaimValue(MarkClaimType.ImpersonatorUserId);
+        var impersonatorUserId = currentUser.FindClaimValue(MakingClaimType.ImpersonatorUserId);
         if (impersonatorUserId.IsNullOrWhiteSpace())
         {
             return null;
@@ -64,12 +64,12 @@ public static class CurrentUserExtensions
 
     public static string? FindImpersonatorTenantName(this ICurrentUser currentUser)
     {
-        return currentUser.FindClaimValue(MarkClaimType.ImpersonatorTenantName);
+        return currentUser.FindClaimValue(MakingClaimType.ImpersonatorTenantName);
     }
 
     public static string? FindImpersonatorUserName(this ICurrentUser currentUser)
     {
-        return currentUser.FindClaimValue(MarkClaimType.ImpersonatorUserName);
+        return currentUser.FindClaimValue(MakingClaimType.ImpersonatorUserName);
     }
 
     public static string GetSessionId(this ICurrentUser currentUser)
@@ -81,6 +81,6 @@ public static class CurrentUserExtensions
 
     public static string? FindSessionId(this ICurrentUser currentUser)
     {
-        return currentUser.FindClaimValue(MarkClaimType.SessionId);
+        return currentUser.FindClaimValue(MakingClaimType.SessionId);
     }
 }

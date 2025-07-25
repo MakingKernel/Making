@@ -9,7 +9,7 @@ namespace System;
 /// <summary>
 /// Extension methods for all objects.
 /// </summary>
-public static class MarkObjectExtensions
+public static class MakingObjectExtensions
 {
     /// <summary>
     /// Used to simplify and beautify casting an object to a type.

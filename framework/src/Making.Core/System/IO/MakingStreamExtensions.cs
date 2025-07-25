@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace System.IO;
 
-public static class MarkStreamExtensions
+public static class MakingStreamExtensions
 {
     public static byte[] GetAllBytes(this Stream stream)
     {

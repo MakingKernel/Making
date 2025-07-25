@@ -1,6 +1,0 @@
-@Making.MiniApis.SimpleTest_HostAddress = http://localhost:5013
-
-GET {{Making.MiniApis.SimpleTest_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

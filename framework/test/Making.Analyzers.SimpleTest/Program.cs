@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Making.Factory.SimpleTest;
+namespace Making.Analyzers.SimpleTest;
 
 class Program
 {
@@ -12,7 +12,7 @@ class Program
 
         var services = new ServiceCollection();
 
-        services.AddMarkFactorySimpleTestServices();
+        services.AddMakingAnalyzersSimpleTestServices();
 
         var serviceProvider = services.BuildServiceProvider();
 

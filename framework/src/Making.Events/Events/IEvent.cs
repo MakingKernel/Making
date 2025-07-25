@@ -1,7 +1,7 @@
 namespace Making.Events;
 
 /// <summary>
-/// Marker interface for events.
+/// Makinger interface for events.
 /// </summary>
 public interface IEvent
 {

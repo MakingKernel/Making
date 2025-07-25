@@ -2,7 +2,7 @@
 
 namespace System.Reflection;
 
-public static class MarkAssemblyExtensions
+public static class MakingAssemblyExtensions
 {
     public static string GetFileVersion(this Assembly assembly)
     {

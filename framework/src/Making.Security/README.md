@@ -26,7 +26,7 @@ dotnet add package Making.Security
 ### Register Services
 
 ```csharp
-services.AddMarkSecurity();
+services.AddMakingSecurity();
 ```
 
 ### Current User Access
@@ -106,13 +106,13 @@ public class CustomAuthService
     public bool HasPermission(string permission)
     {
         var principal = _principalAccessor.Principal;
-        return principal?.HasClaim(MarkClaimType.Permission, permission) ?? false;
+        return principal?.HasClaim(MakingClaimType.Permission, permission) ?? false;
     }
     
     public string GetTenantId()
     {
         var principal = _principalAccessor.Principal;
-        return principal?.FindFirst(MarkClaimType.TenantId)?.Value;
+        return principal?.FindFirst(MakingClaimType.TenantId)?.Value;
     }
 }
 ```
@@ -120,7 +120,7 @@ public class CustomAuthService
 ### Making Claim Types
 
 ```csharp
-public static class MarkClaimType
+public static class MakingClaimType
 {
     public const string UserId = "mark:userid";
     public const string UserName = "mark:username";
@@ -138,15 +138,15 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMarkSecurity();
+        services.AddMakingSecurity();
         
         services.AddAuthorization(options =>
         {
             options.AddPolicy("RequireAdminRole", policy =>
-                policy.RequireClaim(MarkClaimType.Role, "Admin"));
+                policy.RequireClaim(MakingClaimType.Role, "Admin"));
                 
             options.AddPolicy("RequireUserPermission", policy =>
-                policy.RequireClaim(MarkClaimType.Permission, "user:read"));
+                policy.RequireClaim(MakingClaimType.Permission, "user:read"));
         });
     }
 }

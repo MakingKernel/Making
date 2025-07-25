@@ -2,7 +2,7 @@
 
 namespace System;
 
-public static class MarkTypeExtensions
+public static class MakingTypeExtensions
 {
     public static string GetFullNameWithAssemblyName(this Type type)
     {

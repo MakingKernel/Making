@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Making.Factory
+namespace Making.Analyzers
 {
     /// <summary>
     /// Service lifetime enumeration

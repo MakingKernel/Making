@@ -3,7 +3,7 @@
 /// <summary>
 /// Extension methods for the <see cref="DateTime"/>.
 /// </summary>
-public static class MarkDateTimeExtensions
+public static class MakingDateTimeExtensions
 {
     public static DateTime ClearTime(this DateTime dateTime)
     {

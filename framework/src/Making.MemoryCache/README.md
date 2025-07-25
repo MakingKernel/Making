@@ -26,7 +26,7 @@ dotnet add package Making.MemoryCache
 ### Register Services
 
 ```csharp
-services.AddMarkMemoryCache();
+services.AddMakingMemoryCache();
 ```
 
 ### Basic Caching
@@ -145,7 +145,7 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMarkMemoryCache(options =>
+        services.AddMakingMemoryCache(options =>
         {
             options.DefaultExpiration = TimeSpan.FromMinutes(30);
             options.MaxItemCount = 10000;

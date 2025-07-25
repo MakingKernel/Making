@@ -18,9 +18,9 @@ public static class ServiceCollectionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="connectionString">Redis连接字符串</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkRedisCache(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddMakingRedisCache(this IServiceCollection services, string connectionString)
     {
-        return services.AddMarkRedisCache(options =>
+        return services.AddMakingRedisCache(options =>
         {
             options.ConnectionString = connectionString;
         });
@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="configure">配置委托</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkRedisCache(this IServiceCollection services, Action<RedisCacheOptions> configure)
+    public static IServiceCollection AddMakingRedisCache(this IServiceCollection services, Action<RedisCacheOptions> configure)
     {
         ArgumentNullException.ThrowIfNull(configure);
 
@@ -60,9 +60,9 @@ public static class ServiceCollectionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="redisConnectionString">Redis连接字符串</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkHybridCache(this IServiceCollection services, string redisConnectionString)
+    public static IServiceCollection AddMakingHybridCache(this IServiceCollection services, string redisConnectionString)
     {
-        return services.AddMarkHybridCache(
+        return services.AddMakingHybridCache(
             redisOptions => redisOptions.ConnectionString = redisConnectionString,
             hybridOptions => { });
     }
@@ -74,7 +74,7 @@ public static class ServiceCollectionExtensions
     /// <param name="configureRedis">Redis配置委托</param>
     /// <param name="configureHybrid">多级缓存配置委托</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkHybridCache(
+    public static IServiceCollection AddMakingHybridCache(
         this IServiceCollection services,
         Action<RedisCacheOptions> configureRedis,
         Action<HybridCacheOptions> configureHybrid)
@@ -129,9 +129,9 @@ public static class ServiceCollectionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="connectionString">Redis连接字符串</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkDistributedCache(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddMakingDistributedCache(this IServiceCollection services, string connectionString)
     {
-        return services.AddMarkDistributedCache(options =>
+        return services.AddMakingDistributedCache(options =>
         {
             options.ConnectionString = connectionString;
         });
@@ -143,7 +143,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="configure">配置委托</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkDistributedCache(this IServiceCollection services, Action<RedisCacheOptions> configure)
+    public static IServiceCollection AddMakingDistributedCache(this IServiceCollection services, Action<RedisCacheOptions> configure)
     {
         ArgumentNullException.ThrowIfNull(configure);
 

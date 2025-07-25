@@ -45,7 +45,7 @@ dotnet add package Making.RabbitMQ
 ### Register Services
 
 ```csharp
-services.AddMarkRabbitMQ(configuration);
+services.AddMakingRabbitMQ(configuration);
 ```
 
 ### Using RabbitMQ Connection
@@ -131,7 +131,7 @@ public class Startup
             options.RequestedHeartbeat = TimeSpan.FromSeconds(60);
         });
         
-        services.AddMarkRabbitMQ();
+        services.AddMakingRabbitMQ();
     }
 }
 ```

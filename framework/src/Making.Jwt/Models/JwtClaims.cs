@@ -117,63 +117,63 @@ public class JwtClaims
         var claims = new List<Claim>();
 
         if (UserId.HasValue)
-            claims.Add(new Claim(MarkClaimType.UserId, UserId.Value.ToString()));
+            claims.Add(new Claim(MakingClaimType.UserId, UserId.Value.ToString()));
 
         if (!string.IsNullOrEmpty(UserName))
-            claims.Add(new Claim(MarkClaimType.UserName, UserName));
+            claims.Add(new Claim(MakingClaimType.UserName, UserName));
 
         if (!string.IsNullOrEmpty(Name))
-            claims.Add(new Claim(MarkClaimType.Name, Name));
+            claims.Add(new Claim(MakingClaimType.Name, Name));
 
         if (!string.IsNullOrEmpty(SurName))
-            claims.Add(new Claim(MarkClaimType.SurName, SurName));
+            claims.Add(new Claim(MakingClaimType.SurName, SurName));
 
         if (!string.IsNullOrEmpty(Email))
-            claims.Add(new Claim(MarkClaimType.Email, Email));
+            claims.Add(new Claim(MakingClaimType.Email, Email));
 
-        claims.Add(new Claim(MarkClaimType.EmailVerified, EmailVerified.ToString().ToLower()));
+        claims.Add(new Claim(MakingClaimType.EmailVerified, EmailVerified.ToString().ToLower()));
 
         if (!string.IsNullOrEmpty(PhoneNumber))
-            claims.Add(new Claim(MarkClaimType.PhoneNumber, PhoneNumber));
+            claims.Add(new Claim(MakingClaimType.PhoneNumber, PhoneNumber));
 
-        claims.Add(new Claim(MarkClaimType.PhoneNumberVerified, PhoneNumberVerified.ToString().ToLower()));
+        claims.Add(new Claim(MakingClaimType.PhoneNumberVerified, PhoneNumberVerified.ToString().ToLower()));
 
         if (TenantId.HasValue)
-            claims.Add(new Claim(MarkClaimType.TenantId, TenantId.Value.ToString()));
+            claims.Add(new Claim(MakingClaimType.TenantId, TenantId.Value.ToString()));
 
         if (EditionId.HasValue)
-            claims.Add(new Claim(MarkClaimType.EditionId, EditionId.Value.ToString()));
+            claims.Add(new Claim(MakingClaimType.EditionId, EditionId.Value.ToString()));
 
         if (!string.IsNullOrEmpty(ClientId))
-            claims.Add(new Claim(MarkClaimType.ClientId, ClientId));
+            claims.Add(new Claim(MakingClaimType.ClientId, ClientId));
 
         if (Roles != null && Roles.Length > 0)
         {
             foreach (var role in Roles)
             {
-                claims.Add(new Claim(MarkClaimType.Role, role));
+                claims.Add(new Claim(MakingClaimType.Role, role));
             }
         }
 
         if (!string.IsNullOrEmpty(SessionId))
-            claims.Add(new Claim(MarkClaimType.SessionId, SessionId));
+            claims.Add(new Claim(MakingClaimType.SessionId, SessionId));
 
         if (!string.IsNullOrEmpty(Picture))
-            claims.Add(new Claim(MarkClaimType.Picture, Picture));
+            claims.Add(new Claim(MakingClaimType.Picture, Picture));
 
-        claims.Add(new Claim(MarkClaimType.RememberMe, RememberMe.ToString().ToLower()));
+        claims.Add(new Claim(MakingClaimType.RememberMe, RememberMe.ToString().ToLower()));
 
         if (ImpersonatorTenantId.HasValue)
-            claims.Add(new Claim(MarkClaimType.ImpersonatorTenantId, ImpersonatorTenantId.Value.ToString()));
+            claims.Add(new Claim(MakingClaimType.ImpersonatorTenantId, ImpersonatorTenantId.Value.ToString()));
 
         if (ImpersonatorUserId.HasValue)
-            claims.Add(new Claim(MarkClaimType.ImpersonatorUserId, ImpersonatorUserId.Value.ToString()));
+            claims.Add(new Claim(MakingClaimType.ImpersonatorUserId, ImpersonatorUserId.Value.ToString()));
 
         if (!string.IsNullOrEmpty(ImpersonatorTenantName))
-            claims.Add(new Claim(MarkClaimType.ImpersonatorTenantName, ImpersonatorTenantName));
+            claims.Add(new Claim(MakingClaimType.ImpersonatorTenantName, ImpersonatorTenantName));
 
         if (!string.IsNullOrEmpty(ImpersonatorUserName))
-            claims.Add(new Claim(MarkClaimType.ImpersonatorUserName, ImpersonatorUserName));
+            claims.Add(new Claim(MakingClaimType.ImpersonatorUserName, ImpersonatorUserName));
 
         // 添加自定义声明
         if (CustomClaims != null)
@@ -197,56 +197,56 @@ public class JwtClaims
         var claimsList = claims.ToList();
         var jwtClaims = new JwtClaims();
 
-        var userIdClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.UserId);
+        var userIdClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.UserId);
         if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
             jwtClaims.UserId = userId;
 
-        jwtClaims.UserName = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.UserName)?.Value;
-        jwtClaims.Name = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.Name)?.Value;
-        jwtClaims.SurName = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.SurName)?.Value;
-        jwtClaims.Email = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.Email)?.Value;
+        jwtClaims.UserName = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.UserName)?.Value;
+        jwtClaims.Name = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.Name)?.Value;
+        jwtClaims.SurName = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.SurName)?.Value;
+        jwtClaims.Email = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.Email)?.Value;
 
-        var emailVerifiedClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.EmailVerified);
+        var emailVerifiedClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.EmailVerified);
         if (emailVerifiedClaim != null && bool.TryParse(emailVerifiedClaim.Value, out var emailVerified))
             jwtClaims.EmailVerified = emailVerified;
 
-        jwtClaims.PhoneNumber = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.PhoneNumber)?.Value;
+        jwtClaims.PhoneNumber = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.PhoneNumber)?.Value;
 
-        var phoneVerifiedClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.PhoneNumberVerified);
+        var phoneVerifiedClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.PhoneNumberVerified);
         if (phoneVerifiedClaim != null && bool.TryParse(phoneVerifiedClaim.Value, out var phoneVerified))
             jwtClaims.PhoneNumberVerified = phoneVerified;
 
-        var tenantIdClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.TenantId);
+        var tenantIdClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.TenantId);
         if (tenantIdClaim != null && Guid.TryParse(tenantIdClaim.Value, out var tenantId))
             jwtClaims.TenantId = tenantId;
 
-        var editionIdClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.EditionId);
+        var editionIdClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.EditionId);
         if (editionIdClaim != null && Guid.TryParse(editionIdClaim.Value, out var editionId))
             jwtClaims.EditionId = editionId;
 
-        jwtClaims.ClientId = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.ClientId)?.Value;
+        jwtClaims.ClientId = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.ClientId)?.Value;
 
-        var roleClaims = claimsList.Where(c => c.Type == MarkClaimType.Role).Select(c => c.Value).ToArray();
+        var roleClaims = claimsList.Where(c => c.Type == MakingClaimType.Role).Select(c => c.Value).ToArray();
         if (roleClaims.Length > 0)
             jwtClaims.Roles = roleClaims;
 
-        jwtClaims.SessionId = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.SessionId)?.Value;
-        jwtClaims.Picture = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.Picture)?.Value;
+        jwtClaims.SessionId = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.SessionId)?.Value;
+        jwtClaims.Picture = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.Picture)?.Value;
 
-        var rememberMeClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.RememberMe);
+        var rememberMeClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.RememberMe);
         if (rememberMeClaim != null && bool.TryParse(rememberMeClaim.Value, out var rememberMe))
             jwtClaims.RememberMe = rememberMe;
 
-        var impersonatorTenantIdClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.ImpersonatorTenantId);
+        var impersonatorTenantIdClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.ImpersonatorTenantId);
         if (impersonatorTenantIdClaim != null && Guid.TryParse(impersonatorTenantIdClaim.Value, out var impersonatorTenantId))
             jwtClaims.ImpersonatorTenantId = impersonatorTenantId;
 
-        var impersonatorUserIdClaim = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.ImpersonatorUserId);
+        var impersonatorUserIdClaim = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.ImpersonatorUserId);
         if (impersonatorUserIdClaim != null && Guid.TryParse(impersonatorUserIdClaim.Value, out var impersonatorUserId))
             jwtClaims.ImpersonatorUserId = impersonatorUserId;
 
-        jwtClaims.ImpersonatorTenantName = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.ImpersonatorTenantName)?.Value;
-        jwtClaims.ImpersonatorUserName = claimsList.FirstOrDefault(c => c.Type == MarkClaimType.ImpersonatorUserName)?.Value;
+        jwtClaims.ImpersonatorTenantName = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.ImpersonatorTenantName)?.Value;
+        jwtClaims.ImpersonatorUserName = claimsList.FirstOrDefault(c => c.Type == MakingClaimType.ImpersonatorUserName)?.Value;
 
         return jwtClaims;
     }

@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="services">服务集合</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkMemoryCache(this IServiceCollection services)
+    public static IServiceCollection AddMakingMemoryCache(this IServiceCollection services)
     {
         services.AddMemoryCache();
         services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services">服务集合</param>
     /// <param name="configure">配置委托</param>
     /// <returns>服务集合</returns>
-    public static IServiceCollection AddMarkMemoryCache(this IServiceCollection services, Action<MemoryCacheOptions> configure)
+    public static IServiceCollection AddMakingMemoryCache(this IServiceCollection services, Action<MemoryCacheOptions> configure)
     {
         services.AddMemoryCache(configure);
         services.AddSingleton<IMemoryCacheService, MemoryCacheService>();

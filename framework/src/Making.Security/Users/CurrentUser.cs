@@ -14,23 +14,23 @@ public class CurrentUser : ICurrentUser
 
     public virtual Guid? Id => _principalAccessor.Principal?.FindUserId();
 
-    public virtual string? UserName => this.FindClaimValue(MarkClaimType.UserName);
+    public virtual string? UserName => this.FindClaimValue(MakingClaimType.UserName);
 
-    public virtual string? Name => this.FindClaimValue(MarkClaimType.Name);
+    public virtual string? Name => this.FindClaimValue(MakingClaimType.Name);
 
-    public virtual string? SurName => this.FindClaimValue(MarkClaimType.SurName);
+    public virtual string? SurName => this.FindClaimValue(MakingClaimType.SurName);
 
-    public virtual string? PhoneNumber => this.FindClaimValue(MarkClaimType.PhoneNumber);
+    public virtual string? PhoneNumber => this.FindClaimValue(MakingClaimType.PhoneNumber);
 
-    public virtual bool PhoneNumberVerified => string.Equals(this.FindClaimValue(MarkClaimType.PhoneNumberVerified), "true", StringComparison.InvariantCultureIgnoreCase);
+    public virtual bool PhoneNumberVerified => string.Equals(this.FindClaimValue(MakingClaimType.PhoneNumberVerified), "true", StringComparison.InvariantCultureIgnoreCase);
 
-    public virtual string? Email => this.FindClaimValue(MarkClaimType.Email);
+    public virtual string? Email => this.FindClaimValue(MakingClaimType.Email);
 
-    public virtual bool EmailVerified => string.Equals(this.FindClaimValue(MarkClaimType.EmailVerified), "true", StringComparison.InvariantCultureIgnoreCase);
+    public virtual bool EmailVerified => string.Equals(this.FindClaimValue(MakingClaimType.EmailVerified), "true", StringComparison.InvariantCultureIgnoreCase);
 
     public virtual Guid? TenantId => _principalAccessor.Principal?.FindTenantId();
 
-    public virtual string[] Roles => FindClaims(MarkClaimType.Role).Select(c => c.Value).Distinct().ToArray();
+    public virtual string[] Roles => FindClaims(MakingClaimType.Role).Select(c => c.Value).Distinct().ToArray();
 
     private readonly ICurrentPrincipalAccessor _principalAccessor;
 
@@ -56,6 +56,6 @@ public class CurrentUser : ICurrentUser
 
     public virtual bool IsInRole(string roleName)
     {
-        return FindClaims(MarkClaimType.Role).Any(c => c.Value == roleName);
+        return FindClaims(MakingClaimType.Role).Any(c => c.Value == roleName);
     }
 }

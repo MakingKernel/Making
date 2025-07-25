@@ -44,7 +44,7 @@ dotnet add package Making.Jwt
 ### Register Services
 
 ```csharp
-services.AddMarkJwt(configuration);
+services.AddMakingJwt(configuration);
 ```
 
 ### Generate JWT Tokens

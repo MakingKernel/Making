@@ -161,7 +161,7 @@ public static class JwtHelper
     /// <returns>用户ID</returns>
     public static Guid? ExtractUserId(IEnumerable<Claim> claims)
     {
-        var userIdClaim = claims.FirstOrDefault(c => c.Type == MarkClaimType.UserId);
+        var userIdClaim = claims.FirstOrDefault(c => c.Type == MakingClaimType.UserId);
         if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
         {
             return userId;
@@ -176,7 +176,7 @@ public static class JwtHelper
     /// <returns>租户ID</returns>
     public static Guid? ExtractTenantId(IEnumerable<Claim> claims)
     {
-        var tenantIdClaim = claims.FirstOrDefault(c => c.Type == MarkClaimType.TenantId);
+        var tenantIdClaim = claims.FirstOrDefault(c => c.Type == MakingClaimType.TenantId);
         if (tenantIdClaim != null && Guid.TryParse(tenantIdClaim.Value, out var tenantId))
         {
             return tenantId;
@@ -191,7 +191,7 @@ public static class JwtHelper
     /// <returns>角色数组</returns>
     public static string[] ExtractRoles(IEnumerable<Claim> claims)
     {
-        return claims.Where(c => c.Type == MarkClaimType.Role)
+        return claims.Where(c => c.Type == MakingClaimType.Role)
                     .Select(c => c.Value)
                     .Distinct()
                     .ToArray();
@@ -209,19 +209,19 @@ public static class JwtHelper
     {
         var claims = new List<Claim>
         {
-            new(MarkClaimType.UserId, userId.ToString()),
-            new(MarkClaimType.UserName, userName),
-            new(MarkClaimType.SessionId, Guid.NewGuid().ToString())
+            new(MakingClaimType.UserId, userId.ToString()),
+            new(MakingClaimType.UserName, userName),
+            new(MakingClaimType.SessionId, Guid.NewGuid().ToString())
         };
 
         if (tenantId.HasValue)
         {
-            claims.Add(new Claim(MarkClaimType.TenantId, tenantId.Value.ToString()));
+            claims.Add(new Claim(MakingClaimType.TenantId, tenantId.Value.ToString()));
         }
 
         if (roles != null && roles.Length > 0)
         {
-            claims.AddRange(roles.Select(role => new Claim(MarkClaimType.Role, role)));
+            claims.AddRange(roles.Select(role => new Claim(MakingClaimType.Role, role)));
         }
 
         return claims.ToArray();
@@ -261,7 +261,7 @@ public static class JwtHelper
     /// <returns>是否包含角色</returns>
     public static bool HasRole(IEnumerable<Claim> claims, string role)
     {
-        return claims.Any(c => c.Type == MarkClaimType.Role && 
+        return claims.Any(c => c.Type == MakingClaimType.Role && 
                               string.Equals(c.Value, role, StringComparison.OrdinalIgnoreCase));
     }
 

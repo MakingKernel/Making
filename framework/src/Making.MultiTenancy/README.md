@@ -25,7 +25,7 @@ dotnet add package Making.MultiTenancy
 ### Register Services
 
 ```csharp
-services.AddMarkMultiTenancy();
+services.AddMakingMultiTenancy();
 ```
 
 ### Basic Multi-Tenancy Setup
@@ -35,7 +35,7 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMarkMultiTenancy();
+        services.AddMakingMultiTenancy();
         
         // Register tenant-aware services
         services.AddScoped<ITenantAwareService, TenantAwareService>();
@@ -44,7 +44,7 @@ public class Startup
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         // Add tenant resolution middleware
-        app.UseMarkTenantResolution();
+        app.UseMakingTenantResolution();
     }
 }
 ```
@@ -235,7 +235,7 @@ public class TenantResolutionMiddleware
 
 public static class TenantResolutionMiddlewareExtensions
 {
-    public static IApplicationBuilder UseMarkTenantResolution(this IApplicationBuilder builder)
+    public static IApplicationBuilder UseMakingTenantResolution(this IApplicationBuilder builder)
     {
         return builder.UseMiddleware<TenantResolutionMiddleware>();
     }

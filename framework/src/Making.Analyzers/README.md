@@ -172,7 +172,7 @@ Create a `mark.analyzers.json` file in your project root:
   "validateServiceLifetimes": true,
   "validateCircularDependencies": true,
   "generateNamesapce": "MyApp.Generated",
-  "generateClassName": "MarkServiceRegistration",
+  "generateClassName": "MakingServiceRegistration",
   "excludeAssemblies": ["System.*", "Microsoft.*"],
   "includeInternalServices": false
 }

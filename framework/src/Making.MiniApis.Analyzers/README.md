@@ -113,7 +113,7 @@ public static class UserControllerExtensions
 // Main extensions class
 public static class MiniApiExtensions
 {
-    public static IEndpointRouteBuilder MapMarkMiniApis(this IEndpointRouteBuilder endpoints)
+    public static IEndpointRouteBuilder MapMakingMiniApis(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapUserController();
         endpoints.MapProductController();
@@ -135,12 +135,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         
         // Add services
-        builder.Services.AddMarkServices();
+        builder.Services.AddMakingServices();
         
         var app = builder.Build();
         
         // Map all Mini APIs
-        app.MapMarkMiniApis();
+        app.MapMakingMiniApis();
         
         app.Run();
     }

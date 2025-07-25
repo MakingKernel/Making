@@ -44,7 +44,7 @@ dotnet add package Making.MemoryCache.Redis
 ### Register Services
 
 ```csharp
-services.AddMarkRedisCache(configuration);
+services.AddMakingRedisCache(configuration);
 ```
 
 ### Basic Usage
@@ -227,7 +227,7 @@ public class Startup
             options.Redis.RetryCount = 3;
         });
         
-        services.AddMarkRedisCache();
+        services.AddMakingRedisCache();
     }
 }
 ```

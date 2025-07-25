@@ -5,7 +5,7 @@ namespace System.Reflection;
 /// <summary>
 /// Extensions to <see cref="MemberInfo"/>.
 /// </summary>
-public static class MarkMemberInfoExtensions
+public static class MakingMemberInfoExtensions
 {
     /// <summary>
     /// Gets a single attribute for a member.

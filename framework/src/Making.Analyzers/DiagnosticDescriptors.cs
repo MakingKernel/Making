@@ -3,7 +3,7 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Making.Factory
+namespace Making.Analyzers
 {
     /// <summary>
     /// Diagnostic descriptors for the dependency injection source generator

@@ -25,7 +25,7 @@ dotnet add package Making.Mapster
 ### Register Services
 
 ```csharp
-services.AddMarkMapster();
+services.AddMakingMapster();
 ```
 
 ### Basic Mapping
@@ -81,7 +81,7 @@ public class MappingProfile : IRegister
 }
 
 // Register mapping profile
-services.AddMarkMapster(config =>
+services.AddMakingMapster(config =>
 {
     config.Scan(typeof(MappingProfile).Assembly);
 });

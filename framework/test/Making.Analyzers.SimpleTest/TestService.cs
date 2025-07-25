@@ -1,4 +1,4 @@
-namespace Making.Factory.SimpleTest;
+namespace Making.Analyzers.SimpleTest;
 
 public interface ISimpleService
 {

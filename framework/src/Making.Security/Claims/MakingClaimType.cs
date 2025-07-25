@@ -2,7 +2,7 @@
 
 namespace Making.Security.Claims;
 
-public class MarkClaimType
+public class MakingClaimType
 {
     /// <summary>
     /// Default: <see cref="ClaimTypes.Name"/>

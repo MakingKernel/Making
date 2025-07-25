@@ -5,7 +5,7 @@ namespace System.Collections.Generic;
 /// <summary>
 /// Extension methods for Collections.
 /// </summary>
-public static class MarkCollectionExtensions
+public static class MakingCollectionExtensions
 {
     /// <summary>
     /// Checks whatever given collection object is null or has no item.

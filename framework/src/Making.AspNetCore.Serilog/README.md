@@ -36,7 +36,7 @@ builder.Host.UseSerilog((context, configuration) =>
 var app = builder.Build();
 
 // Add Serilog middleware
-app.UseMarkSerilogMiddleware();
+app.UseMakingSerilogMiddleware();
 
 app.Run();
 ```
@@ -44,7 +44,7 @@ app.Run();
 ### With Multi-Tenancy
 
 ```csharp
-app.UseMarkSerilogMiddleware(options =>
+app.UseMakingSerilogMiddleware(options =>
 {
     options.EnrichWithTenantInfo = true;
     options.EnrichWithUserInfo = true;

@@ -3,7 +3,7 @@ namespace System;
 /// <summary>
 /// Extension methods for <see cref="EventHandler"/>.
 /// </summary>
-public static class MarkEventHandlerExtensions
+public static class MakingEventHandlerExtensions
 {
     /// <summary>
     /// Raises given event safely with given arguments.

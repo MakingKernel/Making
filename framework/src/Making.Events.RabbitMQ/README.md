@@ -40,7 +40,7 @@ dotnet add package Making.Events.RabbitMQ
 ### Register Services
 
 ```csharp
-services.AddMarkRabbitMQEvents(configuration);
+services.AddMakingRabbitMQEvents(configuration);
 ```
 
 ### Define Events

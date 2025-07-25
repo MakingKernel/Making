@@ -3,7 +3,7 @@ namespace System;
 /// <summary>
 /// Extension methods for <see cref="IComparable{T}"/>.
 /// </summary>
-public static class MarkComparableExtensions
+public static class MakingComparableExtensions
 {
     /// <summary>
     /// Checks a value is between a minimum and maximum value.
