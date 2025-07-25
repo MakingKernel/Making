@@ -18,7 +18,14 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
       - name: Pack
-        run: dotnet pack --configuration Release
+        run: |
+          mkdir -p nupkg
+          # 仅打包 framework/src 目录中的项目
+          for csproj in $(find ./framework/src -maxdepth 3 -name "*.csproj"); do
+            echo "Packing $csproj"
+            dotnet pack "$csproj" --configuration Release --output ./nupkg
+          done
       - name: Push NuGet package
         run: |
-          dotnet nuget push **/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET }}
+          # 推送打包生成的所有 nupkg 至 NuGet，仅处理 framework/src 生成的包
+          dotnet nuget push ./nupkg/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET }}

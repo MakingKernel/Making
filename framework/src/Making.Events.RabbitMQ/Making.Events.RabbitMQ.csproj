@@ -20,10 +20,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Making.Events\Making.Events.csproj" />
       <ProjectReference Include="..\Making.RabbitMQ\Making.RabbitMQ.csproj" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
       <PackageReference Include="Microsoft.Extensions.Hosting" />
-      <PackageReference Include="RabbitMQ.Client" />
-      <PackageReference Include="System.Text.Json" />
     </ItemGroup>
 
 </Project>
