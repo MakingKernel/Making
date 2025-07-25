@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build:*)",
+      "Bash(find:*)",
+      "Bash(dotnet nuget push:*)",
+      "Bash(for pkg in framework/src/*/bin/Release/*.nupkg)",
+      "Bash(do echo \"Pushing $pkg\")",
+      "Bash(done)",
+      "Bash(git mv:*)",
+      "Bash(ren:*)",
+      "Bash(mv:*)",
+      "Bash(powershell:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}

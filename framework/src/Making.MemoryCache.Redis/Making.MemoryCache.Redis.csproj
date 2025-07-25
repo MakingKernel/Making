@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Making.MemoryCache.Redis</PackageId>
+        <Description>Redis-based memory cache implementation for the Making framework</Description>
+        <PackageTags>mark, framework, redis, memory-cache, caching, distributed-cache</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Making.Core\Making.Core.csproj" />
+      <ProjectReference Include="..\Making.MemoryCache.Abstractions\Making.MemoryCache.Abstractions.csproj" />
+      <ProjectReference Include="..\Making.MemoryCache\Making.MemoryCache.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="StackExchange.Redis" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+      <PackageReference Include="Microsoft.Extensions.Options" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+      <PackageReference Include="System.Text.Json" />
+    </ItemGroup>
+
+</Project>

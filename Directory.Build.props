@@ -12,10 +12,10 @@
     <!-- Common NuGet Package Configuration -->
     <PropertyGroup>
         <Authors>token@mark-chat.chat</Authors>
-        <Company>Mark Chat</Company>
+        <Company>Making Chat</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/markframework/Mark</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/markframework/Mark</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/markframework/Making</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/markframework/Making</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <IncludeSymbols>true</IncludeSymbols>

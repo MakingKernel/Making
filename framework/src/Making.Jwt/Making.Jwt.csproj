@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Making.Jwt</PackageId>
+        <Description>JWT authentication and authorization support for the Making framework</Description>
+        <PackageTags>mark, framework, jwt, authentication, security</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt"  />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
+      <PackageReference Include="Microsoft.Extensions.Options"/>
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"/>
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Making.Security\Making.Security.csproj" />
+    </ItemGroup>
+
+</Project>
