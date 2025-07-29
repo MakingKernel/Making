@@ -34,7 +34,6 @@ public static class ReflectionHelper
         return IsAssignableToGenericType(givenTypeInfo.BaseType, genericType);
     }
 
-    //TODO: Summary
     public static List<Type> GetImplementedGenericTypes(Type givenType, Type genericType)
     {
         var result = new List<Type>();
