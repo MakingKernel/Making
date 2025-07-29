@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Making.Ddd.Domain.Shared\Making.Ddd.Domain.Shared.csproj" />
+      <ProjectReference Include="..\Making.MultiTenancy\Making.MultiTenancy.csproj" />
+    </ItemGroup>
+
+</Project>

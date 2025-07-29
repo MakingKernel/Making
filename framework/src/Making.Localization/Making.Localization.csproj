@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Making.Localization</PackageId>
+        <Description>Comprehensive localization and internationalization support for the Making framework</Description>
+        <PackageTags>mark, framework, localization, i18n, globalization, multi-language</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Making.Core\Making.Core.csproj" />
+      <ProjectReference Include="..\Making.MultiTenancy.Abstractions\Making.MultiTenancy.Abstractions.csproj" />
+      <PackageReference Include="Microsoft.Extensions.Localization" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+      <PackageReference Include="Microsoft.Extensions.Logging" />
+      <PackageReference Include="System.Text.Json" />
+    </ItemGroup>
+
+</Project>

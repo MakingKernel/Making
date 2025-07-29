@@ -11,5 +11,10 @@ public interface ISoftDelete
     /// <summary>
     /// Used to mark an Entity as 'Deleted'.
     /// </summary>
-    bool IsDeleted { get; }
+    bool IsDeleted { get; set; }
+
+    /// <summary>
+    /// Gets or sets the deletion time.
+    /// </summary>
+    DateTime? DeletionTime { get; set; }
 }

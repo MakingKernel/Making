@@ -14,7 +14,10 @@
       "Bash(ls:*)",
       "Bash(mkdir:*)",
       "Bash(cp:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(dotnet --version)",
+      "WebFetch(domain:abp.io)",
+      "Bash(dotnet sln add:*)"
     ],
     "deny": []
   }
