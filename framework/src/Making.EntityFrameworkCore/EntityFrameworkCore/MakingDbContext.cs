@@ -1,11 +1,14 @@
 using Making.Ddd.Domain.Domain.Entities;
 using Making.Ddd.Domain.Domain.Events;
 using Making.EventBus.Abstractions.EventBus;
-using Making.EntityFrameworkCore.EntityFrameworkCore.Auditing;
+using Making.MultiTenancy.Abstractions.MultiTenancy;
+using Making.Security.Users;
+using Making.EntityFrameworkCore.Performance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Mark.Auditing.Abstractions;
 
 namespace Making.EntityFrameworkCore.EntityFrameworkCore;
 
@@ -16,12 +19,17 @@ public abstract class MakingDbContext : DbContext
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MakingDbContext> _logger;
+    private readonly ICurrentUser _currentUser;
+    private readonly Lazy<AuditingOptimizer> _auditingOptimizer;
 
     protected MakingDbContext(DbContextOptions options, IServiceProvider serviceProvider) 
         : base(options)
     {
         _serviceProvider = serviceProvider;
         _logger = serviceProvider.GetRequiredService<ILogger<MakingDbContext>>();
+        _currentUser = serviceProvider.GetRequiredService<ICurrentUser>();
+        _auditingOptimizer = new Lazy<AuditingOptimizer>(() => 
+            new AuditingOptimizer(_currentUser, serviceProvider.GetRequiredService<ILogger<AuditingOptimizer>>()));
     }
 
     /// <summary>
@@ -67,10 +75,12 @@ public abstract class MakingDbContext : DbContext
     /// </summary>
     protected virtual void ApplyMakingConcepts()
     {
-        foreach (var entry in ChangeTracker.Entries())
+        // Use optimized auditing and soft delete processing
+        ChangeTracker.ApplyOptimizedAuditing(_auditingOptimizer.Value);
+
+        // Apply multi-tenancy concept (this still uses the old approach as it's simpler)
+        foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Added))
         {
-            ApplySoftDeleteConcept(entry);
-            ApplyAuditingConcept(entry);
             ApplyMultiTenancyConcept(entry);
         }
     }
@@ -89,41 +99,101 @@ public abstract class MakingDbContext : DbContext
             case EntityState.Deleted:
                 entry.State = EntityState.Modified;
                 softDeleteEntity.IsDeleted = true;
-                softDeleteEntity.DeletionTime = DateTime.UtcNow;
                 
-                if (entry.Entity is ISoftDelete)
+                var now = DateTime.UtcNow;
+                var entityType = entry.Entity.GetType();
+                
+                // Set deletion time using reflection
+                SetPropertyValue(entry.Entity, entityType, nameof(IHasDeletionTime.DeletionTime), now);
+                
+                // Set deleter ID if available
+                var currentUserId = GetCurrentUserId();
+                if (currentUserId.HasValue)
                 {
-                    // Set deletion user if available
-                    // This would typically come from current user service
+                    SetPropertyValue(entry.Entity, entityType, nameof(IDeletionAuditedObject.DeleterId), currentUserId.Value);
                 }
                 break;
         }
     }
 
     /// <summary>
-    /// Applies auditing concept to entities.
+    /// Applies auditing concept to entities using reflection.
     /// </summary>
     /// <param name="entry">Entity entry.</param>
     protected virtual void ApplyAuditingConcept(EntityEntry entry)
     {
         var now = DateTime.UtcNow;
+        var entity = entry.Entity;
+        var entityType = entity.GetType();
 
         switch (entry.State)
         {
             case EntityState.Added:
-                if (entry.Entity is IHasCreationTime creationTimeEntity)
+                // Set creation time
+                SetPropertyValue(entity, entityType, nameof(IHasCreationTime.CreationTime), now);
+                
+                // Set creator ID if available
+                var currentUserId = GetCurrentUserId();
+                if (currentUserId.HasValue)
                 {
-                    creationTimeEntity.CreationTime = now;
+                    SetPropertyValue(entity, entityType, nameof(IMayHaveCreator.CreatorId), currentUserId.Value);
                 }
                 break;
 
             case EntityState.Modified:
-                if (entry.Entity is IHasModificationTime modificationTimeEntity)
+                // Set modification time
+                SetPropertyValue(entity, entityType, nameof(IHasModificationTime.LastModificationTime), now);
+                
+                // Set modifier ID if available
+                var currentModifierId = GetCurrentUserId();
+                if (currentModifierId.HasValue)
                 {
-                    modificationTimeEntity.LastModificationTime = now;
+                    SetPropertyValue(entity, entityType, nameof(IModificationAuditedObject.LastModifierId), currentModifierId.Value);
+                }
+                break;
+
+            case EntityState.Deleted:
+                // This is handled in ApplySoftDeleteConcept, but we can also set deleter info here
+                var currentDeleterId = GetCurrentUserId();
+                if (currentDeleterId.HasValue)
+                {
+                    SetPropertyValue(entity, entityType, nameof(IDeletionAuditedObject.DeleterId), currentDeleterId.Value);
                 }
                 break;
         }
+    }
+
+    /// <summary>
+    /// Sets a property value using reflection if the property exists and has a setter.
+    /// </summary>
+    /// <param name="entity">The entity instance.</param>
+    /// <param name="entityType">The entity type.</param>
+    /// <param name="propertyName">The property name.</param>
+    /// <param name="value">The value to set.</param>
+    protected virtual void SetPropertyValue(object entity, Type entityType, string propertyName, object value)
+    {
+        var property = entityType.GetProperty(propertyName);
+        if (property != null && property.CanWrite)
+        {
+            try
+            {
+                property.SetValue(entity, value);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to set auditing property {PropertyName} on entity {EntityType}", 
+                    propertyName, entityType.Name);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets the current user ID. This should be overridden to provide actual user context.
+    /// </summary>
+    /// <returns>Current user ID or null if not available.</returns>
+    protected virtual Guid? GetCurrentUserId()
+    {
+        return _currentUser.Id;
     }
 
     /// <summary>
