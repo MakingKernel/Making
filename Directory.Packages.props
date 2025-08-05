@@ -1,44 +1,54 @@
 <Project>
-  <PropertyGroup>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
-    <PackageVersion Include="Mapster" Version="7.4.2-pre02" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.7" />
-    <PackageVersion Include="RabbitMQ.Client" Version="7.1.2" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftPackageVersion)" />
-    <!-- 新增：源生成器所需依赖版本 -->
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Scalar.AspNetCore" Version="2.6.4" />
-    <PackageVersion Include="Serilog" Version="4.3.1-dev-02373" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
-    <!-- 缓存相关包版本 -->
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="System.Text.Json" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="StackExchange.Redis" Version="2.7.33" />
-    <!-- Web API 相关包版本 -->
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <!-- 测试相关包版本 -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageVersion Include="xunit" Version="2.4.2" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(MicrosoftPackageVersion)" />
-  </ItemGroup>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1"/>
+        <PackageVersion Include="Mapster" Version="7.4.2-pre02"/>
+        <PackageVersion Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0"/>
+        <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0"/>
+        <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0"/>
+        <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.7"/>
+        <PackageVersion Include="RabbitMQ.Client" Version="7.1.2"/>
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftPackageVersion)"/>
+        <!-- 新增：源生成器所需依赖版本 -->
+        <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0"/>
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Scalar.AspNetCore" Version="2.6.4"/>
+        <PackageVersion Include="Serilog" Version="4.3.1-dev-02373"/>
+        <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1"/>
+        <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
+        <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Options" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.7"/>
+        <PackageVersion Include="Microsoft.Extensions.Localization" Version="$(MicrosoftPackageVersion)"/>
+        <!-- 缓存相关包版本 -->
+        <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="System.Text.Json" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="StackExchange.Redis" Version="2.7.33"/>
+        <!-- Web API 相关包版本 -->
+        <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+
+        <!--    EntityFrameworkCore 相关包版本-->
+        <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(MicrosoftPackageVersion)"/>
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(MicrosoftPackageVersion)"/>
+   
+        <!-- 性能测试相关包版本 -->
+        <PackageVersion Include="BenchmarkDotNet" Version="0.14.0"/>
+        
+        <!-- 测试相关包版本 -->
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
+        <PackageVersion Include="xunit" Version="2.4.2"/>
+        <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5"/>
+        <PackageVersion Include="coverlet.collector" Version="6.0.0"/>
+    </ItemGroup>
 </Project>

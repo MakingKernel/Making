@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Making.Events.RabbitMQ</RootNamespace>
+    </PropertyGroup>
+
+    <!-- NuGet Package Configuration -->
+    <PropertyGroup>
+        <PackageId>Making.EventBus.RabbitMQ</PackageId>
+        <Description>RabbitMQ event bus implementation for the Making framework</Description>
+        <PackageTags>mark, framework, rabbitmq, events, messaging, event-bus</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Making.EventBus\Making.EventBus.csproj" />
+      <ProjectReference Include="..\Making.RabbitMQ\Making.RabbitMQ.csproj" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" />
+    </ItemGroup>
+
+</Project>
