@@ -17,7 +17,14 @@
       "Bash(rm:*)",
       "Bash(dotnet --version)",
       "WebFetch(domain:abp.io)",
-      "Bash(dotnet sln add:*)"
+      "Bash(dotnet sln add:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(dotnet run:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(del ServicesAuthService.cs)",
+      "Bash(dotnet pack:*)"
     ],
     "deny": []
   }
