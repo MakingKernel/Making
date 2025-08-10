@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -53,7 +50,7 @@ namespace Making.MiniApis.Analyzers
                 var collectionPath = match.Groups[2].Value;
                 var innerTemplate = match.Groups[3].Value;
                 
-                var collection = GetPropertyValue(model, collectionPath) as System.Collections.IEnumerable;
+                var collection = GetPropertyValue(model, collectionPath) as IEnumerable;
                 if (collection == null)
                     return string.Empty;
 
@@ -83,7 +80,7 @@ namespace Making.MiniApis.Analyzers
                 var value = GetPropertyValue(model, conditionPath);
                 var isNullOrEmpty = value == null || 
                     (value is string str && string.IsNullOrEmpty(str)) ||
-                    (value is System.Collections.ICollection coll && coll.Count == 0);
+                    (value is ICollection coll && coll.Count == 0);
                 
                 return isNullOrEmpty ? innerTemplate : string.Empty;
             }, RegexOptions.Singleline);
