@@ -41,6 +41,12 @@ public class ApiResultFilter : IEndpointFilter
             return true;
         }
 
+        if (result is IResult resultObj)
+        {
+            // 如果是 IResult 接口类型，直接返回
+            return true;
+        }
+
         return false;
     }
 

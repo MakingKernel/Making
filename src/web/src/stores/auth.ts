@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { User } from 'oidc-client-ts';
-import { authService } from '@/lib/auth';
+import { authService, UserInfo, LoginRequest } from '@/lib/auth';
 
 export interface UserProfile {
   id: string;
@@ -15,16 +14,16 @@ export interface UserProfile {
 }
 
 interface AuthState {
-  user: User | null;
+  user: UserInfo | null;
   profile: UserProfile | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   
   // Actions
-  setUser: (user: User | null) => void;
+  setUser: (user: UserInfo | null) => void;
   setProfile: (profile: UserProfile | null) => void;
   setLoading: (loading: boolean) => void;
-  login: () => Promise<void>;
+  login: (credentials?: LoginRequest) => Promise<void>;
   loginWithProvider: (provider: 'github' | 'gitee') => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
@@ -42,7 +41,7 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user) => {
         set({ 
           user, 
-          isAuthenticated: user != null && !user.expired,
+          isAuthenticated: user != null,
           profile: user ? parseUserProfile(user) : null 
         });
       },
@@ -55,10 +54,20 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading });
       },
 
-      login: async () => {
+      login: async (credentials) => {
         try {
           set({ isLoading: true });
-          await authService.login();
+          await authService.login(credentials);
+          
+          // After successful login, get user info and update state
+          const user = authService.getUser();
+          if (user) {
+            set({ 
+              user, 
+              isAuthenticated: true,
+              profile: parseUserProfile(user) 
+            });
+          }
         } catch (error) {
           console.error('Login failed:', error);
           throw error;
@@ -70,7 +79,8 @@ export const useAuthStore = create<AuthState>()(
       loginWithProvider: async (provider) => {
         try {
           set({ isLoading: true });
-          await authService.loginWithProvider(provider);
+          // 使用新的外部登录方法
+          authService.startExternalLogin(provider, window.location.origin + '/callback');
         } catch (error) {
           console.error(`Login with ${provider} failed:`, error);
           throw error;
@@ -94,9 +104,10 @@ export const useAuthStore = create<AuthState>()(
       checkAuth: async () => {
         try {
           set({ isLoading: true });
-          const user = await authService.getUser();
+          const isAuthenticated = authService.isAuthenticated();
+          const user = authService.getUser();
           
-          if (user && !user.expired) {
+          if (isAuthenticated && user) {
             set({ 
               user, 
               isAuthenticated: true,
@@ -128,7 +139,7 @@ export const useAuthStore = create<AuthState>()(
           const currentProfile = get().profile;
           if (currentProfile) {
             // 首先登出，然后使用新的租户ID重新登录
-            await authService.signout();
+            await authService.logout();
             // 这里可以添加租户切换的特定逻辑
             window.location.href = `/login?tenant=${tenantId}`;
           }
@@ -151,17 +162,15 @@ export const useAuthStore = create<AuthState>()(
   )
 );
 
-function parseUserProfile(user: User): UserProfile {
-  const profile = user.profile as Record<string, unknown>;
-  
+function parseUserProfile(user: UserInfo): UserProfile {
   return {
-    id: (profile.sub as string) || '',
-    username: (profile.preferred_username as string) || (profile.name as string) || '',
-    email: (profile.email as string) || '',
-    firstName: (profile.given_name as string) || '',
-    lastName: (profile.family_name as string) || '',
-    roles: (profile as any).role ? (Array.isArray((profile as any).role) ? (profile as any).role : [ (profile as any).role ]) : [],
-    tenantId: (profile.tenant_id as string) || '',
-    tenantName: (profile.tenant_name as string) || '',
+    id: user.sub || '',
+    username: user.name || user.email || '',
+    email: user.email || '',
+    firstName: user.given_name || '',
+    lastName: user.family_name || '',
+    roles: (user as any).role ? (Array.isArray((user as any).role) ? (user as any).role : [(user as any).role]) : [],
+    tenantId: (user as any).tenant_id || '',
+    tenantName: (user as any).tenant_name || '',
   };
 }

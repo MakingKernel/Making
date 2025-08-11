@@ -1,33 +1,26 @@
-using System.Security.Claims;
 using AuthServer.Models;
 using Making.AspNetCore;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OpenIddict.Abstractions;
-using Microsoft.AspNetCore.Authentication;
-using OpenIddict.Server.AspNetCore;
-using Microsoft.IdentityModel.Tokens;
-using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace AuthServer.Services;
 
 /// <summary>
-/// OAuth2/OIDC 认证端点处理器 - 遵循标准协议流程
+/// 简化的认证服务 - 用于验证基本功能
 /// </summary>
-[MiniApi(route: "/connect", Tags = "OAuth2/OIDC Endpoints")]
+[MiniApi(route: "/api/auth", Tags = "Simple Authentication")]
 [Filter(typeof(ApiResultFilter))]
-public class AuthenticationService
+public class SimpleAuthService
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ILogger<AuthenticationService> _logger;
+    private readonly ILogger<SimpleAuthService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthenticationService(
+    public SimpleAuthService(
         SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
-        ILogger<AuthenticationService> logger,
+        ILogger<SimpleAuthService> logger,
         IHttpContextAccessor httpContextAccessor)
     {
         _signInManager = signInManager;
@@ -39,33 +32,24 @@ public class AuthenticationService
     private HttpContext HttpContext => _httpContextAccessor.HttpContext ?? throw new InvalidOperationException("HttpContext is not available");
 
     /// <summary>
-    /// 简化的健康检查端点
+    /// 健康检查
     /// </summary>
     [HttpGet("health")]
     public IResult Health()
     {
-        return Results.Ok(new { Status = "Healthy", Message = "Authentication service is running" });
-    }
-
-    /// <summary>
-    /// 临时占位方法 - Token端点将由OpenIddict自动处理
-    /// </summary>
-    [HttpGet("info")]
-    public IResult Info()
-    {
         return Results.Ok(new 
         { 
-            Service = "AuthenticationService", 
-            Message = "OpenIddict handles token endpoints automatically",
-            Endpoints = new[] { "/connect/authorize", "/connect/token", "/connect/userinfo" }
+            Status = "Healthy", 
+            Message = "Simple Auth Service is running",
+            Timestamp = DateTime.UtcNow
         });
     }
 
     /// <summary>
-    /// 简化的用户信息端点
+    /// 获取用户信息
     /// </summary>
-    [HttpGet("user")]
-    public async Task<IResult> GetUserInfo()
+    [HttpGet("me")]
+    public async Task<IResult> GetCurrentUser()
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         if (user == null)
@@ -73,22 +57,18 @@ public class AuthenticationService
             return Results.Unauthorized();
         }
 
-        var userInfo = new
+        return Results.Ok(new
         {
             Id = user.Id,
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Avatar = user.Avatar,
-            IsActive = user.IsActive,
-            EmailConfirmed = user.EmailConfirmed
-        };
-
-        return Results.Ok(userInfo);
+            IsActive = user.IsActive
+        });
     }
 
     /// <summary>
-    /// 简单的注销端点
+    /// 注销
     /// </summary>
     [HttpPost("logout")]
     public async Task<IResult> Logout()
@@ -98,8 +78,4 @@ public class AuthenticationService
         
         return Results.Ok(new { Success = true, Message = "Logged out successfully" });
     }
-
-
-
 }
-

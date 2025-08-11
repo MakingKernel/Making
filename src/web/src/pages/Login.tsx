@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuthStore } from '@/stores/auth';
+import { authService } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -52,11 +53,22 @@ export const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!formData.email || !formData.password) {
+      setError('请输入邮箱和密码');
+      return;
+    }
+
     try {
       setError(null);
-      await login();
+      await authService.login({
+        email: formData.email,
+        password: formData.password
+      });
+      
+      // 登录成功后跳转
+      navigate(from, { replace: true });
     } catch (err: any) {
-      setError(err?.message || '登录失败，请稍后重试');
+      setError(err?.message || '登录失败，请检查邮箱和密码');
       console.error('Login failed:', err);
     }
   };
@@ -75,18 +87,15 @@ export const Login: React.FC = () => {
   const [availableProviders, setAvailableProviders] = useState<string[]>([]);
 
   useEffect(() => {
-    // 这里应该从后端API获取可用的登录提供商
-    // 暂时硬编码，实际应该调用 /api/auth/providers 接口
+    // 从后端API获取可用的登录提供商
     const fetchProviders = async () => {
       try {
-        // const response = await fetch('/api/auth/providers');
-        // const providers = await response.json();
-        // setAvailableProviders(providers);
-        
-        // 模拟配置的提供商
-        setAvailableProviders(['github', 'gitee']);
+        const providers = await authService.getExternalProviders();
+        setAvailableProviders(providers.map(p => p.name));
       } catch (err) {
         console.error('Failed to fetch providers:', err);
+        // 如果获取失败，设为空数组
+        setAvailableProviders([]);
       }
     };
 

@@ -13,12 +13,27 @@ export default defineConfig({
   server: {
     proxy: {
       '/connect': {
-        target: 'https://localhost:7018',
+        target: 'http://localhost:5274',
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'https://localhost:7018',
+        target: 'http://localhost:5274',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/Account': {
+        target: 'http://localhost:5274',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/health': {
+        target: 'http://localhost:5274',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/.well-known': {
+        target: 'http://localhost:5274',
         changeOrigin: true,
         secure: false,
       },

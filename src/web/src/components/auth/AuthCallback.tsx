@@ -12,12 +12,15 @@ export const AuthCallback: React.FC = () => {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        const user = await authService.completeAuthentication();
-        setUser(user);
+        await authService.handleCallback();
+        const user = authService.getUser();
+        if (user) {
+          setUser(user);
+        }
         
         // 获取重定向URL
-        const searchParams = new URLSearchParams(location.search);
-        const returnUrl = searchParams.get('state') || '/dashboard';
+        const returnUrl = sessionStorage.getItem('auth_return_url') || '/dashboard';
+        sessionStorage.removeItem('auth_return_url');
         
         navigate(returnUrl, { replace: true });
       } catch (err) {
