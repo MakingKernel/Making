@@ -13,31 +13,7 @@ export type AuthState = AuthStateType;
 export type TokenResponse = TokenResponseType;
 export type ExternalProviderInfo = ExternalProviderInfoType;
 
-// 为了兼容性，保留原有的登录和注册接口
-export interface LoginRequest {
-  email: string;
-  password: string;
-  rememberMe?: boolean;
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-}
-
-export interface AccountResponse {
-  success: boolean;
-  message: string;
-  user?: {
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-  };
-  errors?: string[];
-}
+// 保留外部提供商接口，用于OAuth2扩展
 
 import { authenticatedHttpClient } from './http-interceptors';
 import { authService as oidcAuthService, OIDCAuthService } from './oidc-auth';
@@ -54,96 +30,51 @@ class EnhancedAuthService {
   }
 
   /**
-   * 统一登录方法 - 支持OAuth2流程和传统密码登录
+   * 统一登录方法 - 纯OAuth2流程
    */
-  async login(credentials?: LoginRequest): Promise<void> {
-    if (credentials) {
-      return this.loginWithCredentials(credentials);
-    }
-    
-    // OAuth2/OIDC 流程
+  async login(): Promise<void> {
+    // 直接使用OAuth2/OIDC 流程
     return this.oidcService.login();
   }
 
   /**
-   * 传统密码登录（通过Account Management API）
+   * OAuth2认证方法 - 用于OAuth2流程中的用户身份验证
    */
-  async loginWithCredentials(credentials: LoginRequest): Promise<void> {
+  async authenticateForOAuth2(email: string, password: string, rememberMe: boolean = false): Promise<void> {
     try {
-      const response = await authenticatedHttpClient.post<AccountResponse>('/Account/Login', {
-        email: credentials.email,
-        password: credentials.password,
-        rememberMe: credentials.rememberMe || false
+      const response = await authenticatedHttpClient.post('/connect/authenticate', {
+        email,
+        password,
+        rememberMe
       });
 
-      // 如果登录成功，模拟用户信息并更新OIDC服务状态
-      if (response.data.success && response.data.user) {
-        const user = response.data.user;
-        // 模拟OAuth2用户信息格式
-        const oidcUser = {
-          sub: user.id,
-          email: user.email,
-          given_name: user.firstName,
-          family_name: user.lastName,
-          name: `${user.firstName} ${user.lastName}`.trim()
-        };
-
-        // 手动设置OIDC服务状态（用于传统登录）
-        this.oidcService['setState']({
-          user: oidcUser,
-          isAuthenticated: true,
-          accessToken: 'cookie-based-auth', // 标记为基于Cookie的认证
-          expiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24小时
-          isLoading: false,
-          error: null
-        });
+      if (response.data.success) {
+        // 认证成功，现在可以重新发起OAuth2授权请求
+        return;
       } else {
-        throw new Error(response.data.message || 'Login failed');
+        throw new Error('认证失败');
       }
     } catch (error: any) {
-      console.error('Credential login failed:', error);
+      console.error('OAuth2 authentication failed:', error);
       
-      if (error.status === 400 || error.status === 401) {
-        throw new Error('邮箱或密码错误');
+      if (error.status === 400) {
+        const errorData = error.data || {};
+        switch (errorData.error) {
+          case 'invalid_credentials':
+            throw new Error('邮箱或密码错误');
+          case 'account_locked':
+            throw new Error('账户已被锁定，请稍后再试');
+          case 'two_factor_required':
+            throw new Error('需要两步验证');
+          default:
+            throw new Error(errorData.error_description || '认证失败');
+        }
       }
-      throw new Error('登录失败，请稍后重试');
+      
+      throw new Error('认证失败，请稍后重试');
     }
   }
 
-  /**
-   * 用户注册
-   */
-  async register(request: RegisterRequest): Promise<void> {
-    try {
-      const response = await authenticatedHttpClient.post<AccountResponse>('/Account/Register', request);
-
-      if (response.data.success && response.data.user) {
-        // 注册成功后自动登录
-        const user = response.data.user;
-        const oidcUser = {
-          sub: user.id,
-          email: user.email,
-          given_name: user.firstName,
-          family_name: user.lastName,
-          name: `${user.firstName} ${user.lastName}`.trim()
-        };
-
-        this.oidcService['setState']({
-          user: oidcUser,
-          isAuthenticated: true,
-          accessToken: 'cookie-based-auth',
-          expiresAt: Date.now() + 24 * 60 * 60 * 1000,
-          isLoading: false,
-          error: null
-        });
-      } else {
-        throw new Error(response.data.message || 'Registration failed');
-      }
-    } catch (error) {
-      console.error('Registration failed:', error);
-      throw error;
-    }
-  }
 
   /**
    * 获取外部登录提供商

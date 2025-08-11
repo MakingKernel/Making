@@ -1,5 +1,6 @@
 import { authService } from './oidc-auth';
 import { HttpClient, HttpResponse, HttpError } from './http';
+import { HTTP_CONFIG } from '../config/api';
 
 /**
  * 认证拦截器配置
@@ -224,12 +225,7 @@ export class AuthenticatedHttpClient extends HttpClient {
  * 默认的认证HTTP客户端实例
  */
 export const authenticatedHttpClient = new AuthenticatedHttpClient(
-  {
-    timeout: 10000,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  },
+  HTTP_CONFIG.authServer,
   {
     onUnauthorized: () => {
       console.warn('用户未授权，可能需要重新登录');

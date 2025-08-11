@@ -125,7 +125,7 @@ builder.Services.AddOpenIddict()
 
         options.UseAspNetCore()
             .EnableTokenEndpointPassthrough()
-            // 移除 EnableAuthorizationEndpointPassthrough() 让OpenIddict自动处理授权
+            .EnableAuthorizationEndpointPassthrough() // 重新启用以便自定义处理
             // .EnableUserinfoEndpointPassthrough() // 可能在OpenIddict 7.0中不存在
             // .EnableLogoutEndpointPassthrough() // 可能在OpenIddict 7.0中不存在
             .EnableStatusCodePagesIntegration();
@@ -333,11 +333,13 @@ static async Task CreateClientsAsync(IOpenIddictApplicationManager manager)
         RedirectUris =
         {
             new Uri("http://localhost:5173/callback"),
+            new Uri("http://localhost:5176/callback"),
             new Uri("http://localhost:5177/callback")
         },
         PostLogoutRedirectUris =
         {
             new Uri("http://localhost:5173/"),
+            new Uri("http://localhost:5176/"),
             new Uri("http://localhost:5177/")
         }
     });

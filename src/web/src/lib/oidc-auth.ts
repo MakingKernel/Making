@@ -1,4 +1,5 @@
 import { HttpError } from './http';
+import { OIDC_CONFIG } from '../config/api';
 
 /**
  * OpenID Connect 配置接口
@@ -97,20 +98,9 @@ class PKCEHelper {
 }
 
 /**
- * 默认 OIDC 配置
+ * 默认 OIDC 配置 - 从配置文件导入
  */
-const defaultOIDCConfig: OIDCConfig = {
-  authority: 'http://localhost:5274',
-  client_id: 'web-client',
-  redirect_uri: `${window.location.origin}/callback`,
-  post_logout_redirect_uri: `${window.location.origin}/`,
-  silent_redirect_uri: `${window.location.origin}/auth/silent-callback`,
-  response_type: 'code',
-  scope: 'openid profile email',
-  automaticSilentRenew: true,
-  filterProtocolClaims: true,
-  loadUserInfo: true
-};
+const defaultOIDCConfig: OIDCConfig = OIDC_CONFIG;
 
 /**
  * 企业级 OIDC 认证服务
