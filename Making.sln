@@ -68,9 +68,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Making.Auditing.Abstraction
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Making.Auditing", "framework\src\Making.Auditing\Making.Auditing.csproj", "{2AAEC021-B930-457B-B4E3-9AF7A51A5141}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{ACEE5DD8-8C22-4C64-8CCD-6C47529733AD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthServer", "AuthServer", "{ACEE5DD8-8C22-4C64-8CCD-6C47529733AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer", "src\AuthServer\AuthServer.csproj", "{A9707E6E-1848-4083-A4B7-48ADE0F03E18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer", "src\AuthServer\AuthServer\AuthServer.csproj", "{A9707E6E-1848-4083-A4B7-48ADE0F03E18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

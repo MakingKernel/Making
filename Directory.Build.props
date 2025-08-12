@@ -1,24 +1,24 @@
 <Project>
-    <PropertyGroup>
-        <LangVersion>latest</LangVersion>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-        <MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.0</MicrosoftPackageVersion>
-        <MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">9.0.0</MicrosoftPackageVersion>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Version>1.0.4-preview</Version>
-    </PropertyGroup>
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.0</MicrosoftPackageVersion>
+		<MicrosoftPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">9.0.0</MicrosoftPackageVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Version>1.0.4-preview</Version>
+	</PropertyGroup>
 
-    <PropertyGroup>
-        <Authors>token@mark-chat.chat</Authors>
-        <Company>MakingKernel</Company>
-        <Description>Making framework for building modern applications </Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/MakingKernel/Making</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/MakingKernel/Making</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
+	<PropertyGroup>
+		<Authors>token@mark-chat.chat</Authors>
+		<Company>MakingKernel</Company>
+		<Description>Making framework for building modern applications </Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/MakingKernel/Making</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/MakingKernel/Making</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
 </Project>

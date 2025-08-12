@@ -19,8 +19,13 @@
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     </PropertyGroup>
-    
-    <PropertyGroup>
+
+	<ItemGroup>
+		<None Include="bin\Debug\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Debug'" />
+		<None Include="bin\Release\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Release'" />
+	</ItemGroup>
+
+	<PropertyGroup>
         <PackageId>Making.MiniApis.Analyzers</PackageId>
         <Description>Code analyzers and source generators for Making Mini APIs</Description>
         <PackageTags>mark, framework, analyzers, source-generators, roslyn, mini-apis</PackageTags>
@@ -29,11 +34,6 @@
     
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="\" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <None Include="bin\Debug\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Debug'" />
-        <None Include="bin\Release\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Release'" />
     </ItemGroup>
     
 </Project>

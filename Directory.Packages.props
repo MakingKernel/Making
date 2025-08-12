@@ -8,7 +8,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.7" />
     <PackageVersion Include="Microsoft.OpenApi" Version="2.0.0" />
     <PackageVersion Include="OpenIddict.Quartz" Version="7.0.0" />
@@ -27,21 +27,21 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftPackageVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="$(MicrosoftPackageVersion)" />
     <!-- 缓存相关包版本 -->
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.6" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="$(MicrosoftPackageVersion)" />
+    <PackageVersion Include="System.Text.Json" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="StackExchange.Redis" Version="2.7.33" />
     <!-- Web API 相关包版本 -->
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(MicrosoftPackageVersion)" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <!--    EntityFrameworkCore 相关包版本-->
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(MicrosoftPackageVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="$(MicrosoftPackageVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(MicrosoftPackageVersion)" />
     <!-- 性能测试相关包版本 -->
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <!-- OpenIddict 相关包版本 -->

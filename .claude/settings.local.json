@@ -24,7 +24,9 @@
       "Bash(dotnet run:*)",
       "Bash(dotnet clean:*)",
       "Bash(del ServicesAuthService.cs)",
-      "Bash(dotnet pack:*)"
+      "Bash(dotnet pack:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)"
     ],
     "deny": []
   }

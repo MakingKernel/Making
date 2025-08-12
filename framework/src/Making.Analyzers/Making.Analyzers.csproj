@@ -18,13 +18,26 @@
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
-    </ItemGroup>
 
-  <PropertyGroup>
-    <IsPackable>false</IsPackable>
-    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference  PrivateAssets="all" Include="Microsoft.CodeAnalysis.Analyzers">
+		</PackageReference>
+		<PackageReference  PrivateAssets="all" Include="Microsoft.CodeAnalysis.CSharp" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<!-- Generates a package at build -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<!-- Do not include the generator as a lib dependency -->
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="bin\Debug\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Debug'" />
+		<None Include="bin\Release\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Release'" />
+	</ItemGroup>
+
 
 </Project>
