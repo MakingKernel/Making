@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using AuthServer.Dto;
 using AuthServer.Models;
 using Making.AspNetCore;
 using Microsoft.AspNetCore.Identity;
@@ -12,34 +12,19 @@ namespace AuthServer.Services;
 /// </summary>
 [MiniApi(route: "/Account", Tags = "Account Management")]
 [Filter(typeof(ApiResultFilter))]
-public class AccountManagementService
+public class AccountManagementService(
+    SignInManager<ApplicationUser> signInManager,
+    UserManager<ApplicationUser> userManager,
+    ILogger<AccountManagementService> logger)
 {
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ILogger<AccountManagementService> _logger;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public AccountManagementService(
-        SignInManager<ApplicationUser> signInManager,
-        UserManager<ApplicationUser> userManager,
-        ILogger<AccountManagementService> logger,
-        IHttpContextAccessor httpContextAccessor)
-    {
-        _signInManager = signInManager;
-        _userManager = userManager;
-        _logger = logger;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-
     /// <summary>
     /// 外部登录提供商
     /// </summary>
     [HttpGet("ExternalProviders")]
-    public async Task<IEnumerable<ExternalProviderInfo>> GetExternalProviders()
+    public async Task<IEnumerable<ExternalProviderInfoDto>> GetExternalProviders()
     {
-        var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
-        return schemes.Select(scheme => new ExternalProviderInfo
+        var schemes = await signInManager.GetExternalAuthenticationSchemesAsync();
+        return schemes.Select(scheme => new ExternalProviderInfoDto
         {
             Name = scheme.Name.ToLowerInvariant(),
             DisplayName = scheme.DisplayName ?? scheme.Name,
@@ -55,7 +40,7 @@ public class AccountManagementService
     {
         var redirectUrl = $"/Account/ExternalLoginCallback?returnUrl={Uri.EscapeDataString(returnUrl ?? "")}";
         
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+        var properties = signInManager.ConfigureExternalAuthenticationProperties(
             provider, redirectUrl);
         
         return Results.Challenge(properties, new[] { provider });
@@ -69,19 +54,19 @@ public class AccountManagementService
     {
         if (remoteError != null)
         {
-            _logger.LogError("外部登录错误: {Error}", remoteError);
+            logger.LogError("外部登录错误: {Error}", remoteError);
             return Results.BadRequest(new { Error = $"外部提供商错误: {remoteError}" });
         }
 
-        var info = await _signInManager.GetExternalLoginInfoAsync();
+        var info = await signInManager.GetExternalLoginInfoAsync();
         if (info == null)
         {
-            _logger.LogError("无法获取外部登录信息");
+            logger.LogError("无法获取外部登录信息");
             return Results.BadRequest(new { Error = "外部登录信息获取失败" });
         }
 
         // 尝试使用外部登录信息登录
-        var result = await _signInManager.ExternalLoginSignInAsync(
+        var result = await signInManager.ExternalLoginSignInAsync(
             info.LoginProvider, 
             info.ProviderKey,
             isPersistent: false, 
@@ -89,7 +74,7 @@ public class AccountManagementService
 
         if (result.Succeeded)
         {
-            _logger.LogInformation("用户通过 {Provider} 外部登录成功", info.LoginProvider);
+            logger.LogInformation("用户通过 {Provider} 外部登录成功", info.LoginProvider);
             return Results.Redirect(returnUrl ?? "/");
         }
 
@@ -110,7 +95,7 @@ public class AccountManagementService
             return Results.BadRequest(new { Error = "无法从外部提供商获取邮箱地址" });
         }
 
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await userManager.FindByEmailAsync(email);
         
         if (user == null)
         {
@@ -124,21 +109,21 @@ public class AccountManagementService
                 EmailConfirmed = true // 外部提供商已验证邮箱
             };
 
-            var createResult = await _userManager.CreateAsync(user);
+            var createResult = await userManager.CreateAsync(user);
             if (!createResult.Succeeded)
             {
                 var errors = createResult.Errors.Select(e => e.Description);
                 return Results.BadRequest(new { Error = "创建用户失败", Details = errors });
             }
 
-            _logger.LogInformation("通过 {Provider} 创建新用户 {Email}", info.LoginProvider, email);
+            logger.LogInformation("通过 {Provider} 创建新用户 {Email}", info.LoginProvider, email);
         }
 
         // 关联外部登录
-        await _userManager.AddLoginAsync(user, info);
-        await _signInManager.SignInAsync(user, isPersistent: false);
+        await userManager.AddLoginAsync(user, info);
+        await signInManager.SignInAsync(user, isPersistent: false);
 
-        _logger.LogInformation("用户 {Email} 通过 {Provider} 登录成功", email, info.LoginProvider);
+        logger.LogInformation("用户 {Email} 通过 {Provider} 登录成功", email, info.LoginProvider);
         
         return Results.Redirect(returnUrl ?? "/");
     }
@@ -150,19 +135,9 @@ public class AccountManagementService
     [IgnoreAntiforgeryToken]
     public async Task<IResult> Logout()
     {
-        await _signInManager.SignOutAsync();
-        _logger.LogInformation("用户已注销");
+        await signInManager.SignOutAsync();
+        logger.LogInformation("用户已注销");
         
         return Results.Ok(new { Success = true, Message = "注销成功" });
     }
-}
-
-/// <summary>
-/// 外部提供商信息
-/// </summary>
-public class ExternalProviderInfo
-{
-    public string Name { get; set; } = string.Empty;
-    public string DisplayName { get; set; } = string.Empty;
-    public string Provider { get; set; } = string.Empty;
 }

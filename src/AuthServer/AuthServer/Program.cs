@@ -1,5 +1,7 @@
 using AuthServer.Data;
 using AuthServer.Models;
+using AuthServer.Services;
+using AuthServer.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
@@ -20,8 +22,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddMiniApis();
 builder.Services.AddHttpContextAccessor();
 
+// Add custom services
+builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+
 // Add Identity services with enhanced security
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, AdminRole>(options =>
     {
         // 强化密码策略
         options.Password.RequireDigit = true;
@@ -268,14 +274,16 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.MapMiniApis();
-
-
 // 使用速率限制
 app.UseRateLimiter();
 
+// 添加审计日志中间件
+app.UseAuditLogging();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapMiniApis();
 
 // 添加健康检查端点
 app.MapHealthChecks("/health");
@@ -286,9 +294,13 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AdminRole>>();
     var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
     await context.Database.EnsureCreatedAsync();
+
+    // 创建系统权限和角色
+    await CreateSystemPermissionsAndRolesAsync(context, roleManager);
 
     // 创建默认客户端应用
     await CreateClientsAsync(manager);
@@ -298,7 +310,7 @@ using (var scope = app.Services.CreateScope())
     await CreateScopesAsync(scopeManager);
 
     // 创建默认用户
-    await CreateDefaultUserAsync(userManager);
+    await CreateDefaultUserAsync(userManager, roleManager);
 }
 
 app.Run();
@@ -393,7 +405,53 @@ static async Task CreateScopesAsync(IOpenIddictScopeManager manager)
     }
 }
 
-static async Task CreateDefaultUserAsync(UserManager<ApplicationUser> userManager)
+static async Task CreateSystemPermissionsAndRolesAsync(ApplicationDbContext context, RoleManager<AdminRole> roleManager)
+{
+    // 创建系统权限
+    var existingPermissions = await context.Permissions.ToListAsync();
+    var systemPermissions = SystemPermissions.GetSystemPermissions().ToList();
+    
+    foreach (var permission in systemPermissions.Where(permission => existingPermissions.All(p => p.Name != permission.Name)))
+    {
+        context.Permissions.Add(permission);
+    }
+    await context.SaveChangesAsync();
+
+    // 创建系统角色
+    var systemRoles = SystemRoles.GetSystemRoles().ToList();
+    foreach (var role in systemRoles)
+    {
+        if (!await roleManager.RoleExistsAsync(role.Name!))
+        {
+            await roleManager.CreateAsync(role);
+        }
+    }
+
+    // 为超级管理员角色分配所有权限
+    var superAdminRole = await roleManager.FindByNameAsync(SystemRoles.SuperAdmin);
+    if (superAdminRole != null)
+    {
+        var allPermissions = await context.Permissions.Where(p => p.IsSystemPermission).ToListAsync();
+        var existingRolePermissions = await context.RolePermissions
+            .Where(rp => rp.RoleId == superAdminRole.Id)
+            .ToListAsync();
+
+        foreach (var permission in allPermissions)
+        {
+            if (!existingRolePermissions.Any(rp => rp.PermissionId == permission.Id))
+            {
+                context.RolePermissions.Add(new RolePermission
+                {
+                    RoleId = superAdminRole.Id,
+                    PermissionId = permission.Id
+                });
+            }
+        }
+        await context.SaveChangesAsync();
+    }
+}
+
+static async Task CreateDefaultUserAsync(UserManager<ApplicationUser> userManager, RoleManager<AdminRole> roleManager)
 {
     var defaultUser = await userManager.FindByEmailAsync("admin@example.com");
     if (defaultUser == null)
@@ -404,9 +462,16 @@ static async Task CreateDefaultUserAsync(UserManager<ApplicationUser> userManage
             Email = "admin@example.com",
             EmailConfirmed = true,
             FirstName = "Admin",
-            LastName = "User"
+            LastName = "User",
+            IsActive = true,
+            IsAdmin = true
         };
 
-        await userManager.CreateAsync(defaultUser, "Admin123456!");
+        var result = await userManager.CreateAsync(defaultUser, "Admin123456!");
+        if (result.Succeeded)
+        {
+            // 分配超级管理员角色
+            await userManager.AddToRoleAsync(defaultUser, SystemRoles.SuperAdmin);
+        }
     }
 }

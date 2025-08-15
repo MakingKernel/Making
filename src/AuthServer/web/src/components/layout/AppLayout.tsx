@@ -10,10 +10,10 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { User, LogOut, Settings, ChevronDown } from 'lucide-react';
+import { User, LogOut, Settings, ChevronDown, Shield } from 'lucide-react';
 
 export const AppLayout: React.FC = () => {
-  const { profile, logout, isAuthenticated } = useAuthStore();
+  const { user, logout, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -72,7 +72,7 @@ export const AppLayout: React.FC = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-2">
                     <User className="h-4 w-4" />
-                    <span>{profile?.username || profile?.email}</span>
+                    <span>{user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.email}</span>
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -87,11 +87,20 @@ export const AppLayout: React.FC = () => {
                     <Settings className="mr-2 h-4 w-4" />
                     <span>设置</span>
                   </DropdownMenuItem>
-                  {profile?.tenantId && (
+                  {user?.tenantId && (
                     <DropdownMenuItem onClick={() => navigate('/tenant-switch')}>
                       <ChevronDown className="mr-2 h-4 w-4" />
                       <span>切换租户</span>
                     </DropdownMenuItem>
+                  )}
+                  {user?.isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => navigate('/admin')}>
+                        <Shield className="mr-2 h-4 w-4" />
+                        <span>管理控制台</span>
+                      </DropdownMenuItem>
+                    </>
                   )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
