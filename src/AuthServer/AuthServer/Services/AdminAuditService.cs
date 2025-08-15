@@ -9,7 +9,7 @@ namespace AuthServer.Services;
 /// <summary>
 /// 管理员服务 - 审计日志相关API
 /// </summary>
-//[MiniApi(route: "/admin/audit", Tags = "Admin - Audit Log")]
+[MiniApi(route: "/admin/audit", Tags = "Admin - Audit Log")]
 [Filter(typeof(ApiResultFilter))]
 [Authorize]
 public class AdminAuditService(IAuditService auditService, ILogger<AdminAuditService> logger)
