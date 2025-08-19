@@ -42,7 +42,7 @@ public class RabbitMqEventBus : IEventBus, IHostedService
             return;
         }
 
-        using var channel = await _connection.CreateModelAsync();
+        await using var channel = await _connection.CreateModelAsync();
 
         var eventType = typeof(TEvent);
         var routingKey = eventType.FullName!;

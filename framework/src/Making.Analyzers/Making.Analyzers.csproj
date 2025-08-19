@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <RootNamespace>Making.Analyzers</RootNamespace>
     </PropertyGroup>
@@ -25,18 +25,11 @@
 		<PackageReference  PrivateAssets="all" Include="Microsoft.CodeAnalysis.CSharp" />
 	</ItemGroup>
 
-	<PropertyGroup>
-		<!-- Generates a package at build -->
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<!-- Do not include the generator as a lib dependency -->
-		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="bin\Debug\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Debug'" />
-		<None Include="bin\Release\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs\$(AssemblyName).dll" Visible="false" Condition="'$(Configuration)' == 'Release'" />
-	</ItemGroup>
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeBuildOutput>true</IncludeBuildOutput> <!-- 自动包含 DLL 到 NuGet 包 -->
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    </PropertyGroup>
 
 
 </Project>
