@@ -36,8 +36,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\Making\Making.csproj" />
+      <ProjectReference Include="..\Making.Core\Making.Core.csproj" />
     </ItemGroup>
-
 
 </Project>

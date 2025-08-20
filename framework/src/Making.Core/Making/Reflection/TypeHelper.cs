@@ -206,7 +206,7 @@ public static class TypeHelper
             var genericType = type.GetGenericTypeDefinition();
             var genericTypeFullName = genericType.FullName!;
             return
-                $"{genericTypeFullName.Left(genericTypeFullName.IndexOf('`'))}<{string.Join(',', type.GenericTypeArguments.Select(GetFullNameHandlingNullableAndGenerics))}>";
+                $"{genericTypeFullName.Left(genericTypeFullName.IndexOf('`'))}<{string.Join(",", type.GenericTypeArguments.Select(GetFullNameHandlingNullableAndGenerics))}>";
         }
 
         return type.FullName ?? type.Name;
@@ -226,7 +226,7 @@ public static class TypeHelper
             var genericType = type.GetGenericTypeDefinition();
             var genericTypeFullName = genericType.FullName!;
             return
-                $"{genericTypeFullName.Left(genericTypeFullName.IndexOf('`'))}<{string.Join(',', type.GenericTypeArguments.Select(GetSimplifiedName))}>";
+                $"{genericTypeFullName.Left(genericTypeFullName.IndexOf('`'))}<{string.Join(",", type.GenericTypeArguments.Select(GetSimplifiedName))}>";
         }
 
         if (type == typeof(string))

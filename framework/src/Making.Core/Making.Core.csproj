@@ -4,6 +4,9 @@
     <PropertyGroup>
         <Nullable>enable</Nullable>
         <RootNamespace>Making</RootNamespace>
+        <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <!-- NuGet Package Configuration -->
@@ -13,7 +16,21 @@
         <PackageTags>mark, framework, core, infrastructure</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
-    
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+        <PackageReference Include="System.Threading.Tasks.Extensions" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETStandard' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '2.0')) ">
+        <PackageReference Include="System.Collections.Immutable" />
+        <PackageReference Include="System.Text.Encodings.Web" />
+        <PackageReference Include="System.Runtime.Loader" />
+        <PackageReference Include="System.Linq.Queryable" />
+        <PackageReference Include="Nullable">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
