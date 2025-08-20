@@ -5,6 +5,7 @@ using Making.Security.Principal;
 
 namespace Making.Security.Users;
 
+[Transient]
 public class CurrentUser : ICurrentUser
 {
     

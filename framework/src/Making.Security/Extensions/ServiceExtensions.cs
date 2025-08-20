@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Making.Security.Claims;
 using Making.Security.Users;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Making.Security.Extensions;
 
@@ -82,5 +83,11 @@ public static class CurrentUserExtensions
     public static string? FindSessionId(this ICurrentUser currentUser)
     {
         return currentUser.FindClaimValue(MakingClaimType.SessionId);
+    }
+    
+    public static IServiceCollection AddSecurity(this IServiceCollection services)
+    {
+        services.AddSingleton<ICurrentUser, CurrentUser>();
+        return services;
     }
 }
