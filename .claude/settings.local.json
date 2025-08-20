@@ -28,6 +28,7 @@
       "Bash(curl:*)",
       "Bash(taskkill:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   }
 }
