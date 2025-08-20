@@ -29,6 +29,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- Generates a package at build -->
         <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IncludeSymbols>false</IncludeSymbols> <!-- Analyzer packages don't need symbol packages -->
     </PropertyGroup>
     
     <ItemGroup>
